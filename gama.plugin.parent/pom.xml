@@ -21,20 +21,20 @@
 
     <!-- ── Modules: add one entry per plugin/feature in this repo ── -->
     <modules>
-        <module>../gama.experimental.argumentation</module>
-        <module>../gama.experimental.bayesiannetwork</module>
-        <module>../gama.experimental.feature.argumentation</module>
-        <module>../gama.experimental.feature.bayesiannetwork</module>
-        <module>../gama.experimental.feature.ifcfile</module>
-        <module>../gama.experimental.feature.imageanalysis</module>
-        <module>../gama.experimental.feature.qrcode</module>
-        <module>../gama.experimental.feature.webcam</module>
-        <module>../gama.experimental.feature.weka</module>
-        <module>../gama.experimental.ifcfile</module>
-        <module>../gama.experimental.imageanalysis</module>
-        <module>../gama.experimental.qrcode</module>
-        <module>../gama.experimental.webcam</module>
-        <module>../gama.experimental.weka</module>
+        <module>../gama.plugin.argumentation</module>
+        <module>../gama.plugin.bayesiannetwork</module>
+        <module>../gama.plugin.feature.argumentation</module>
+        <module>../gama.plugin.feature.bayesiannetwork</module>
+        <module>../gama.plugin.feature.ifcfile</module>
+        <module>../gama.plugin.feature.imageanalysis</module>
+        <module>../gama.plugin.feature.qrcode</module>
+        <module>../gama.plugin.feature.webcam</module>
+        <module>../gama.plugin.feature.weka</module>
+        <module>../gama.plugin.ifcfile</module>
+        <module>../gama.plugin.imageanalysis</module>
+        <module>../gama.plugin.qrcode</module>
+        <module>../gama.plugin.webcam</module>
+        <module>../gama.plugin.weka</module>
         
         <module>../gama.plugin.p2updatesite</module>
     </modules>

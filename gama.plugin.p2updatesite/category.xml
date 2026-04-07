@@ -12,38 +12,38 @@
             gama.optional.formats      - New file format support (IFC, NetCDF, CIM...)
             gama.optional.ia           - Artificial intelligence components
     -->
-    <feature url="features/gama.experimental.feature.argumentation_2025.6.0.qualifier.jar"
-             id="gama.experimental.feature.argumentation"
+    <feature url="features/gama.plugin.feature.argumentation_2025.6.0.qualifier.jar"
+             id="gama.plugin.feature.argumentation"
              version="2025.6.0.qualifier">
         <category name="gama.optional"/>
     </feature>
-    <feature url="features/gama.experimental.feature.bayesiannetwork_1.0.0.qualifier.jar"
-             id="gama.experimental.feature.bayesiannetwork"
+    <feature url="features/gama.plugin.feature.bayesiannetwork_1.0.0.qualifier.jar"
+             id="gama.plugin.feature.bayesiannetwork"
              version="1.0.0.qualifier">
         <category name="gama.optional"/>
     </feature>
-    <feature url="features/gama.experimental.feature.ifcfile_1.0.0.qualifier.jar"
-             id="gama.experimental.feature.ifcfile"
+    <feature url="features/gama.plugin.feature.ifcfile_1.0.0.qualifier.jar"
+             id="gama.plugin.feature.ifcfile"
+             version="1.0.0.qualifier">
+        <category name="gama.optional.formats"/>
+    </feature>
+    <feature url="features/gama.plugin.feature.imageanalysis_1.0.0.qualifier.jar"
+             id="gama.plugin.feature.imageanalysis"
              version="1.0.0.qualifier">
         <category name="gama.optional"/>
     </feature>
-    <feature url="features/gama.experimental.feature.imageanalysis_1.0.0.qualifier.jar"
-             id="gama.experimental.feature.imageanalysis"
+    <feature url="features/gama.plugin.feature.qrcode_1.0.0.qualifier.jar"
+             id="gama.plugin.feature.qrcode"
              version="1.0.0.qualifier">
         <category name="gama.optional"/>
     </feature>
-    <feature url="features/gama.experimental.feature.qrcode_1.0.0.qualifier.jar"
-             id="gama.experimental.feature.qrcode"
-             version="1.0.0.qualifier">
-        <category name="gama.optional"/>
-    </feature>
-    <feature url="features/gama.experimental.feature.webcam_2025.6.0.qualifier.jar"
-             id="gama.experimental.feature.webcam"
+    <feature url="features/gama.plugin.feature.webcam_2025.6.0.qualifier.jar"
+             id="gama.plugin.feature.webcam"
              version="2025.6.0.qualifier">
         <category name="gama.optional"/>
     </feature>
-    <feature url="features/gama.experimental.feature.weka_1.7.0.qualifier.jar"
-             id="gama.experimental.feature.weka"
+    <feature url="features/gama.plugin.feature.weka_1.7.0.qualifier.jar"
+             id="gama.plugin.feature.weka"
              version="1.7.0.qualifier">
         <category name="gama.optional"/>
     </feature>
