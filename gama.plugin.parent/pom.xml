@@ -21,8 +21,21 @@
 
     <!-- ── Modules: add one entry per plugin/feature in this repo ── -->
     <modules>
-        <module>../MY_PLUGIN</module>
-        <module>../MY_PLUGIN.feature</module>
+        <module>../gama.experimental.argumentation</module>
+        <module>../gama.experimental.bayesiannetwork</module>
+        <module>../gama.experimental.feature.argumentation</module>
+        <module>../gama.experimental.feature.bayesiannetwork</module>
+        <module>../gama.experimental.feature.ifcfile</module>
+        <module>../gama.experimental.feature.imageanalysis</module>
+        <module>../gama.experimental.feature.qrcode</module>
+        <module>../gama.experimental.feature.webcam</module>
+        <module>../gama.experimental.feature.weka</module>
+        <module>../gama.experimental.ifcfile</module>
+        <module>../gama.experimental.imageanalysis</module>
+        <module>../gama.experimental.qrcode</module>
+        <module>../gama.experimental.webcam</module>
+        <module>../gama.experimental.weka</module>
+        
         <module>../gama.plugin.p2updatesite</module>
     </modules>
 
