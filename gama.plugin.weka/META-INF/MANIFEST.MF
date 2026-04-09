@@ -3,12 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Weka plug-in
 Bundle-SymbolicName: gama.plugin.weka;singleton:=true
 Bundle-Version: 1.7.0.qualifier
-Require-Bundle: gama.core,
- gama.dependencies
+Require-Bundle: gama.core,gama.dependencies,gama.annotations,
+ gama.processor,gama.api
 Bundle-ClassPath: lib/weka.jar,
  .
 Export-Package: gama.plugin.weka.operators
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: IDEES
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Automatic-Module-Name: idees.gama.weka

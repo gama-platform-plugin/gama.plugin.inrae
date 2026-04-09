@@ -5,10 +5,9 @@ Bundle-SymbolicName: gama.plugin.qrcode;singleton:=true
 Bundle-Vendor: MIAT INRAE
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: miat.gama.extension.qrcode
-Bundle-RequiredExecutionEnvironment: JavaSE-21
-Require-Bundle: gama.core,
- gama.dependencies,
- gama.plugin.webcam
+Bundle-RequiredExecutionEnvironment: JavaSE-25
+Require-Bundle: gama.core,gama.dependencies,gama.plugin.webcam,
+ gama.annotations,gama.processor,gama.api
 Bundle-ClassPath: lib/core-3.4.1.jar,
  lib/javase-3.4.1.jar,
  lib/bridj-0.7.0.jar,

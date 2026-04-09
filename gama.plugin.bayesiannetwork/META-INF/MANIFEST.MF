@@ -5,9 +5,10 @@ Bundle-SymbolicName: gama.plugin.bayesiannetwork;singleton:=true
 Bundle-Vendor: MIAT INRAE
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: gama.plugin.bayesiannetwork
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Require-Bundle: gama.core;bundle-version="0.0.0",
- gama.dependencies;bundle-version="0.0.0"
+ gama.dependencies;bundle-version="0.0.0",gama.annotations,
+ gama.processor,gama.api
 Bundle-ClassPath: lib/jayes-0.0.2.jar,
  .
 Export-Package: gama.plugin.bayesiannetwork.operators,

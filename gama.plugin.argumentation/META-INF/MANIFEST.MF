@@ -2,16 +2,17 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Argumentation
 Bundle-SymbolicName: gama.plugin.argumentation;singleton:=true
-Bundle-Version: 2025.6.0.qualifier
+Bundle-Version: 2026.6.0.qualifier
 Export-Package: gama.plugin.argumentation.operators,
  gama.plugin.argumentation.skills,
  gama.plugin.argumentation.species,
  gama.plugin.argumentation.types
 Require-Bundle: gama.core;bundle-version="0.0.0",
- gama.dependencies;bundle-version="0.0.0"
+ gama.dependencies;bundle-version="0.0.0",gama.annotations,
+ gama.processor,gama.api
 Automatic-Module-Name: gaml.extension.argumentation
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/jArgSemSAT.jar,
  lib/org.sat4j.core-2.3.1.jar,
  .
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25

@@ -2,7 +2,7 @@
 <feature
       id="gama.plugin.feature.argumentation"
       label="Argumentation"
-      version="2025.6.0.qualifier"
+      version="2026.6.0.qualifier"
       provider-name="INRAE">
 
    <description url="http://www.example.com/description">

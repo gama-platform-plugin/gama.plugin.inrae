@@ -4,10 +4,9 @@ Bundle-Name: Ifcfile
 Bundle-SymbolicName: gama.plugin.ifcfile;singleton:=true
 Bundle-Vendor: MIAT - INRAE
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-21
-Require-Bundle: gama.core,
- gama.dependencies,
- gama.processor
+Bundle-RequiredExecutionEnvironment: JavaSE-25
+Require-Bundle: gama.core,gama.dependencies,gama.processor,
+ gama.annotations,gama.api
 Bundle-ClassPath: .,
  lib/ifc4javatoolbox_2.0.1_20130524.jar,
  lib/ifc2x3javatoolbox_2.0.1_20130524.jar
