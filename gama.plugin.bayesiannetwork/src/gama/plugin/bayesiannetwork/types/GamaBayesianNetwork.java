@@ -6,19 +6,20 @@ import cc.kave.repackaged.jayes.BayesNet;
 import cc.kave.repackaged.jayes.BayesNode;
 import cc.kave.repackaged.jayes.inference.IBayesInferer;
 import cc.kave.repackaged.jayes.inference.junctionTree.JunctionTreeAlgorithm;
-import gama.core.common.interfaces.IValue;
-import gama.annotations.precompiler.GamlAnnotations.getter;
-import gama.annotations.precompiler.GamlAnnotations.variable;
-import gama.annotations.precompiler.GamlAnnotations.vars;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaListFactory;
-import gama.core.util.IList;
-import gama.core.util.file.json.Json;
-import gama.core.util.file.json.JsonValue;
-import gama.gaml.types.IType;
-
-@vars({ @variable(name = "id", type = IType.STRING),
+import gama.annotations.getter;
+import gama.annotations.variable;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.types.IType;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.misc.IValue;
+import gama.api.utils.json.IJson;
+import gama.api.utils.json.IJsonValue;
+import gama.core.util.json.Json;
+import gama.core.util.json.JsonValue;
+ 
+@vars({ @variable(name = "id", type = IType.STRING), 
 	@variable(name = "nodes", type = IType.LIST) })
 public class GamaBayesianNetwork  implements IValue{
 	private BayesNet network;
@@ -46,7 +47,7 @@ public class GamaBayesianNetwork  implements IValue{
 	@getter("nodes")
 	public IList<String> getNodes() {
 		List<BayesNode> nodes = network.getNodes();
-		IList<String> nodesName = GamaListFactory.EMPTY_LIST;
+		IList nodesName = GamaListFactory.EMPTY_LIST;
 		for (BayesNode n : nodes) nodesName.add(n.getName());
 		return nodesName;
 	}
@@ -82,6 +83,18 @@ public class GamaBayesianNetwork  implements IValue{
 
 	@Override
 	public JsonValue serializeToJson(Json json) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IType<?> getGamlType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IJsonValue serializeToJson(IJson json) {
 		// TODO Auto-generated method stub
 		return null;
 	}

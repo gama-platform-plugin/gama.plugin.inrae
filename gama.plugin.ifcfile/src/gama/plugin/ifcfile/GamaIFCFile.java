@@ -61,25 +61,19 @@ import ifc2x3javatoolbox.ifc2x3tc1.IfcTypeObject;
 import ifc2x3javatoolbox.ifc2x3tc1.IfcWall;
 import ifc2x3javatoolbox.ifc2x3tc1.IfcWindow;
 import ifc4javatoolbox.ifcmodel.IfcModel;
-import gama.core.common.geometry.Envelope3D;
-import gama.core.common.geometry.GeometryUtils;
-import gama.core.common.interfaces.IKeyword;
-import gama.core.metamodel.shape.GamaPoint;
-import gama.core.metamodel.shape.IShape;
-import gama.annotations.precompiler.GamlAnnotations.file;
-import gama.annotations.precompiler.IConcept;
-import gama.core.runtime.GAMA;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaListFactory;
-import gama.core.util.GamaMapFactory;
-import gama.core.util.IList;
-import gama.core.util.IMap;
+import gama.annotations.support.IConcept;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.types.GamaGeometryType;
+import gama.api.gaml.types.IType;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.GamaPoint;
+import gama.api.types.geometry.GamaPointFactory;
+import gama.api.types.geometry.IPoint;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
 import gama.core.util.file.GamaGeometryFile;
 import gama.gaml.operators.spatial.*;
-import gama.gaml.types.GamaGeometryType;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
 
 /**
  * Written by drogoul Modified on 13 nov. 2011
@@ -87,7 +81,7 @@ import gama.gaml.types.Types;
  * @todo Description
  *
  */
-@file (
+@gama.annotations.file (
 		name = "ifc",
 		extensions = { "ifc" },
 		buffer_type = IType.LIST,
@@ -111,51 +105,51 @@ public class GamaIFCFile extends GamaGeometryFile {
 		return GamaListFactory.create();
 	}
 
-	public GamaPoint toPoint(final IfcDirection direction) {
+	public IPoint toPoint(final IfcDirection direction) {
 		if (direction != null) {
 			if (direction.getDirectionRatios().size() > 2) {
-				return new GamaPoint(direction.getDirectionRatios().get(0).value,
+				return  GamaPointFactory.create(direction.getDirectionRatios().get(0).value,
 						direction.getDirectionRatios().get(1).value, direction.getDirectionRatios().get(2).value);
 			}
-			return new GamaPoint(direction.getDirectionRatios().get(0).value,
+			return GamaPointFactory.create((direction.getDirectionRatios().get(0).value,
 					direction.getDirectionRatios().get(1).value);
 		}
 		return null;
 	}
 
-	public GamaPoint toPoint(final IfcCartesianPoint point) {
+	public IPoint toPoint(final IfcCartesianPoint point) {
 		if (point != null) {
 			if (point.getCoordinates().size() > 2) {
-				return new GamaPoint(point.getCoordinates().get(0).value, point.getCoordinates().get(1).value,
+				return GamaPointFactory.create(point.getCoordinates().get(0).value, point.getCoordinates().get(1).value,
 						point.getCoordinates().get(2).value);
 			}
-			return new GamaPoint(point.getCoordinates().get(0).value, point.getCoordinates().get(1).value);
+			return GamaPointFactory.create(point.getCoordinates().get(0).value, point.getCoordinates().get(1).value);
 		}
 		return null;
 	}
 
 	public class Axe {
-		public GamaPoint origin;
-		GamaPoint xDir;
-		GamaPoint yDir;
-		GamaPoint zDir;
+		public IPoint origin;
+		IPoint xDir;
+		IPoint yDir;
+		IPoint zDir;
 
 		public Axe() {
-			origin = new GamaPoint(0, 0, 0);
-			xDir = new GamaPoint(1, 0, 0);
-			yDir = new GamaPoint(0, 1, 0);
-			zDir = new GamaPoint(0, 0, 1);
+			origin = GamaPointFactory.create(0, 0, 0);
+			xDir = GamaPointFactory.create(1, 0, 0);
+			yDir = GamaPointFactory.create((0, 1, 0);
+			zDir =GamaPointFactory.create((0, 0, 1);
 		}
 
 		public Axe(final Axe pa) {
-			origin = new GamaPoint(pa.origin);
-			xDir = new GamaPoint(pa.xDir);
-			yDir = new GamaPoint(pa.yDir);
-			zDir = new GamaPoint(pa.zDir);
+			origin = GamaPointFactory.create(pa.origin);
+			xDir = GamaPointFactory.create(pa.xDir);
+			yDir = GamaPointFactory.create(pa.yDir);
+			zDir =GamaPointFactory.create(pa.zDir);
 		}
 
 		public GamaPoint toNewRef(final Coordinate pt, final boolean normalize) {
-			final GamaPoint nPt = new GamaPoint();
+			IPoint nPt = GamaPointFactory.create(0.0, 0.0, 0.0);
 			nPt.x = pt.x * xDir.x + pt.y * yDir.x + pt.z * zDir.x;
 			nPt.y = pt.x * xDir.y + pt.y * yDir.y + pt.z * zDir.y;
 			nPt.z = pt.x * xDir.z + pt.y * yDir.z + pt.z * zDir.z;

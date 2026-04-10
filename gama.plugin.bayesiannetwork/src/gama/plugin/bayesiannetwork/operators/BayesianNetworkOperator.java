@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import cc.kave.repackaged.jayes.BayesNode;
+import gama.annotations.operator;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.types.Cast;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.map.GamaMap;
+import gama.api.types.map.GamaMapFactory;
 import gama.plugin.bayesiannetwork.types.GamaBayesianNetwork;
-import gama.annotations.precompiler.GamlAnnotations.operator;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaListFactory;
-import gama.core.util.GamaMap;
-import gama.core.util.GamaMapFactory;
-import gama.gaml.operators.Cast;
 
 public class BayesianNetworkOperator {
 

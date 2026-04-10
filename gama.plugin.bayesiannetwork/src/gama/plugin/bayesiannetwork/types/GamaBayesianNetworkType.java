@@ -1,16 +1,22 @@
 package gama.plugin.bayesiannetwork.types;
 
-import gama.annotations.precompiler.GamlAnnotations.type;
-import gama.annotations.precompiler.IConcept;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.gaml.types.GamaType;
-import gama.gaml.types.IType;
+import gama.annotations.type;
+import gama.annotations.support.IConcept;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.types.GamaType;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.ITypesManager;
+import gama.api.runtime.scope.IScope;
 
 @type(name = "bayesian_network", id = GamaBayesianNetworkType.id, wraps = { GamaBayesianNetwork.class }, concept = { IConcept.TYPE, "Bayesian Network" })
 public class GamaBayesianNetworkType extends GamaType<GamaBayesianNetwork> {
 
-	public final static int id = IType.AVAILABLE_TYPES + 1231029875;
+	public GamaBayesianNetworkType(ITypesManager typesManager) {
+		super(typesManager);
+		
+	}
+
+	public final static int id = IType.BEGINNING_OF_CUSTOM_TYPES + 1231029875;
 
 	@Override
 	public boolean canCastToConst() {
