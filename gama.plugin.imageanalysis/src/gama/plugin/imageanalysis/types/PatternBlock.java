@@ -5,15 +5,14 @@ import gama.annotations.variable;
 import gama.annotations.vars;
 import gama.api.exceptions.GamaRuntimeException;
 import gama.api.gaml.expressions.IExpression;
-import gama.api.gaml.types.GamaMatrixType;
 import gama.api.gaml.types.IType;
 import gama.api.gaml.types.Types;
 import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.GamaPointFactory;
+import gama.api.types.matrix.GamaMatrixFactory;
 import gama.api.types.misc.IValue;
 import gama.api.utils.json.IJson;
 import gama.api.utils.json.IJsonValue;
-import gama.core.util.json.Json;
-import gama.core.util.json.JsonValue;
 import gama.core.util.matrix.GamaIntMatrix;
 
 @vars({ @variable(name = "id", type = IType.STRING), 
@@ -27,7 +26,7 @@ public class PatternBlock implements IValue {
 	}
 	public PatternBlock(IScope scope, String typeName, int cols, int rows, IExpression init, boolean parallel) {
 		id = typeName;
-		matrix = (GamaIntMatrix) GamaMatrixType.with(scope, init, cols, rows, parallel);
+		matrix = (GamaIntMatrix) GamaMatrixFactory.createWith(scope, init, GamaPointFactory.create(cols, rows), parallel);
 	}
 
 	@getter ("id")

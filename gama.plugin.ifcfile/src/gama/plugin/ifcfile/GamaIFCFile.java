@@ -19,6 +19,27 @@ import java.util.Map;
 
 import org.locationtech.jts.geom.Coordinate;
 
+import gama.annotations.constants.IKeyword;
+import gama.annotations.support.IConcept;
+import gama.api.GAMA;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.types.GamaGeometryType;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.GamaPoint;
+import gama.api.types.geometry.GamaPointFactory;
+import gama.api.types.geometry.IPoint;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.map.GamaMapFactory;
+import gama.api.types.map.IMap;
+import gama.api.utils.geometry.GeometryUtils;
+import gama.api.utils.geometry.IEnvelope;
+import gama.core.util.file.GamaGeometryFile;
+import gama.gaml.operators.spatial.SpatialCreation;
+import gama.gaml.operators.spatial.SpatialTransformations;
 import ifc2x3javatoolbox.ifc2x3tc1.IfcArbitraryClosedProfileDef;
 import ifc2x3javatoolbox.ifc2x3tc1.IfcAxis2Placement;
 import ifc2x3javatoolbox.ifc2x3tc1.IfcAxis2Placement2D;
@@ -61,23 +82,6 @@ import ifc2x3javatoolbox.ifc2x3tc1.IfcTypeObject;
 import ifc2x3javatoolbox.ifc2x3tc1.IfcWall;
 import ifc2x3javatoolbox.ifc2x3tc1.IfcWindow;
 import ifc4javatoolbox.ifcmodel.IfcModel;
-import gama.annotations.constants.IKeyword;
-import gama.annotations.support.IConcept;
-import gama.api.GAMA;
-import gama.api.exceptions.GamaRuntimeException;
-import gama.api.gaml.types.GamaGeometryType;
-import gama.api.gaml.types.IType;
-import gama.api.gaml.types.Types;
-import gama.api.runtime.scope.IScope;
-import gama.api.types.geometry.GamaPoint;
-import gama.api.types.geometry.GamaPointFactory;
-import gama.api.types.geometry.IPoint;
-import gama.api.types.geometry.IShape;
-import gama.api.types.list.GamaListFactory;
-import gama.api.types.list.IList;
-import gama.api.utils.geometry.GeometryUtils;
-import gama.core.util.file.GamaGeometryFile;
-import gama.gaml.operators.spatial.*;
 
 /**
  * Written by drogoul Modified on 13 nov. 2011
@@ -731,14 +735,14 @@ public class GamaIFCFile extends GamaGeometryFile {
 	}
 
 	@Override
-	public Envelope3D computeEnvelope(final IScope scope) {
+	public IEnvelope computeEnvelope(final IScope scope) {
 		boolean didFillBuffer = false;
 		if (getBuffer() == null) {
 			fillBuffer(scope);
 			didFillBuffer = true;
 		}
 		if (getBuffer() == null) { return null; }
-		Envelope3D env = GeometryUtils.computeEnvelopeFrom(scope, getBuffer());
+		IEnvelope env = GeometryUtils.computeEnvelopeFrom(scope, getBuffer());
 		if (didFillBuffer) {
 			final GamaPoint vect = new GamaPoint(-env.getMinX(), -env.getMinY(), -env.getMinZ());
 			final IList<IShape> newBuffer = GamaListFactory.create(Types.GEOMETRY);

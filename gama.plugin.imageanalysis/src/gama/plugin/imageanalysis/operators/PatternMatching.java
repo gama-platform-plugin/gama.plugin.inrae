@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.geotools.geometry.jts.ReferencedEnvelope3D;
 
 import com.google.common.io.Files;
 
@@ -45,6 +44,7 @@ import gama.api.types.geometry.GamaPointFactory;
 import gama.api.types.geometry.IShape;
 import gama.api.types.list.GamaListFactory;
 import gama.api.types.list.IList;
+import gama.api.types.matrix.GamaMatrixFactory;
 import gama.api.types.matrix.IMatrix;
 import gama.api.types.pair.GamaPair;
 import gama.api.utils.files.FileUtils;
@@ -216,7 +216,7 @@ public class PatternMatching {
     		int cpt = 0;
     		int cpt2 = 0;
     		for ( BufferedImage img  : images) {
-        		GamaIntMatrix l = new GamaIntMatrix(nbR, nbC);
+        		GamaIntMatrix l = (GamaIntMatrix) GamaMatrixFactory.createIntMatrix(nbR, nbC);
         	      
         		int width = img.getWidth()/nbC;
 	            int height = img.getHeight()/nbR;
@@ -657,10 +657,10 @@ public class PatternMatching {
 			return null;
 		}
 		int xSize, ySize;
-		BufferedImage resultingImage = image;
+		BufferedImage resultingImage = image; 
 		xSize = image.getWidth();
 		ySize = image.getHeight(); 
-		final IMatrix<Integer> matrix = new GamaIntMatrix(xSize, ySize);
+		final IMatrix<Integer> matrix = GamaMatrixFactory.createIntMatrix(xSize, ySize);
 		for (int i = 0; i < xSize; i++) {
 			for (int j = 0; j < ySize; j++) {
 				matrix.set(scope, i, j, resultingImage.getRGB(i, j));
