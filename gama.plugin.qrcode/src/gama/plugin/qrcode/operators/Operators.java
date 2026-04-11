@@ -31,11 +31,15 @@ import gama.annotations.operator;
 import gama.annotations.support.IOperatorCategory;
 import gama.api.GAMA;
 import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
 import gama.api.runtime.scope.IScope;
 import gama.api.types.geometry.GamaPoint;
+import gama.api.types.geometry.GamaPointFactory;
 import gama.api.types.list.GamaListFactory;
 import gama.api.types.list.IList;
 import gama.api.types.map.GamaMapFactory;
+import gama.api.types.matrix.GamaMatrixFactory;
 import gama.api.types.matrix.IMatrix;
 import gama.api.types.pair.GamaPair;
 import gama.api.utils.files.FileUtils;
@@ -43,9 +47,9 @@ import gama.core.geometry.GamaShape;
 import gama.core.util.matrix.GamaIntMatrix;
 import gama.core.util.matrix.GamaMatrix;
 import gama.core.util.matrix.GamaObjectMatrix;
+import gama.gaml.operators.spatial.SpatialCreation;
 import gama.plugin.webcam.operators.WebcamOperators;
 import gama.plugin.webcam.types.GamaWebcam;
-import gama.gaml.operators.spatial.SpatialCreation;
 
 public class Operators {
 	
@@ -56,7 +60,7 @@ public class Operators {
 		BufferedImage resultingImage = image;
 		xSize = image.getWidth();
 		ySize = image.getHeight();
-		final IMatrix matrix = new GamaIntMatrix(xSize, ySize); 
+		final IMatrix matrix =  GamaMatrixFactory.createIntMatrix(xSize, ySize); 
 		for (int i = 0; i < xSize; i++) {
 			for (int j = 0; j < ySize; j++) {
 				matrix.set(scope, i, j, resultingImage.getRGB(i, j));
@@ -72,7 +76,7 @@ public class Operators {
 			category = IOperatorCategory.LIST)
 	@doc (
 			value = "encode a given message into a QR code with the given resolution (width, height) as matrix of bool")
-	public static GamaMatrix encodeQRcode(final IScope scope, final String message, final int width, final int height)  {
+	public static IMatrix encodeQRcode(final IScope scope, final String message, final int width, final int height)  {
 		com.google.zxing.Writer writer = new MultiFormatWriter();
 		BitMatrix matrix = null;
 	      try {
@@ -84,9 +88,9 @@ public class Operators {
         	GAMA.reportError(scope, GamaRuntimeException.error("Problem when encoding the message \""+ message + "\": " + e.getMessage(), scope), true);
         }
 
-		 GamaObjectMatrix matrixR = new GamaObjectMatrix(width, height, Types.BOOL);
+		 IMatrix matrixR = GamaMatrixFactory.createObjectMatrix(width, height, (IType) Types.BOOL); 
 		 
-		 for (int i = 0; i < width; i++) {
+		 for (int i = 0; i < width; i++) { 
 			 for (int j = 0; j < width; j++) {
 				 matrixR.set(scope, i, j, matrix.get(i, j)); 
 			 } 
@@ -165,7 +169,7 @@ public class Operators {
 		ResultPoint[] pts = result.getResultPoints();
 		IList<GamaPoint> ptsGama = GamaListFactory.create();
 		for (ResultPoint pt : pts) {
-			ptsGama.add(new GamaPoint(pt.getX(), pt.getY()));
+			ptsGama.add((GamaPoint) GamaPointFactory.create(pt.getX(), pt.getY()));
 		}
 		GamaShape gs = (GamaShape) SpatialCreation.polygon(scope, ptsGama);
 		return gs;

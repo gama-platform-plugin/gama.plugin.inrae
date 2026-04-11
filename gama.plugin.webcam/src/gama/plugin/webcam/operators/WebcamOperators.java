@@ -10,18 +10,19 @@ import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 
-import gama.core.common.util.FileUtils;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.operator;
-import gama.plugin.webcam.types.GamaWebcam;
-import gama.annotations.precompiler.IOperatorCategory;
-import gama.core.runtime.GAMA;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaPair;
+import gama.annotations.doc;
+import gama.annotations.operator;
+import gama.annotations.support.IOperatorCategory;
+import gama.api.GAMA;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.types.Cast;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.matrix.GamaMatrixFactory;
+import gama.api.types.matrix.IMatrix;
+import gama.api.types.pair.GamaPair;
+import gama.api.utils.files.FileUtils;
 import gama.core.util.matrix.GamaIntMatrix;
-import gama.core.util.matrix.IMatrix;
-import gama.gaml.operators.Cast;
+import gama.plugin.webcam.types.GamaWebcam;
 
 public class WebcamOperators {
 	
@@ -191,8 +192,8 @@ public class WebcamOperators {
 		}
 		
 		if (resolution != null )  {
-			final int width = Cast.asInt(scope, resolution.key);
-			final int height = Cast.asInt(scope, resolution.value);
+			final int width = Cast.asInt(scope, resolution.key());
+			final int height = Cast.asInt(scope, resolution.value());
 			Dimension dim = new Dimension(width,height );
 			
 			boolean nonStandard = true;
@@ -260,7 +261,7 @@ public class WebcamOperators {
 		BufferedImage resultingImage = image;
 		xSize = image.getWidth();
 		ySize = image.getHeight();
-		final IMatrix<Integer> matrix = new GamaIntMatrix(xSize, ySize);
+		final IMatrix<Integer> matrix = GamaMatrixFactory.createIntMatrix(xSize, ySize);
 		for (int i = 0; i < xSize; i++) {
 			for (int j = 0; j < ySize; j++) {
 				matrix.set(scope, i, j, resultingImage.getRGB(i, j));

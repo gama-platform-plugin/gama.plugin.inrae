@@ -6,16 +6,22 @@ import com.github.eduramiba.webcamcapture.drivers.NativeDriver;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.ds.buildin.WebcamDefaultDriver;
 
-import gama.annotations.precompiler.GamlAnnotations.type;
-import gama.annotations.precompiler.IConcept;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.gaml.types.GamaType;
-import gama.gaml.types.IType;
+import gama.annotations.type;
+import gama.annotations.support.IConcept;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.types.GamaType;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.ITypesManager;
+import gama.api.runtime.scope.IScope;
 
 @type(name = "webcam", id = GamaWebcamType.id, wraps = { GamaWebcam.class }, concept = { IConcept.TYPE, "webcam" })
 public class GamaWebcamType extends GamaType<GamaWebcam> {
-	public final static int id = IType.AVAILABLE_TYPES + 4532623;
+	public GamaWebcamType(ITypesManager typesManager) {
+		super(typesManager);
+		
+	}
+
+	public final static int id = IType.BEGINNING_OF_CUSTOM_TYPES + 4532623;
 
 	static {
 		final String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
