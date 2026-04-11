@@ -14,19 +14,20 @@ import boofcv.struct.ConnectRule;
 import boofcv.struct.image.GrayF32;
 import boofcv.struct.image.GrayS32;
 import boofcv.struct.image.GrayU8;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.operator;
-import gama.annotations.precompiler.IOperatorCategory;
-import gama.core.metamodel.shape.GamaPoint;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.util.GamaListFactory;
-import gama.core.util.IList;
+import gama.annotations.doc;
+import gama.annotations.operator;
+import gama.annotations.support.IOperatorCategory;
+import gama.api.gaml.types.IType;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.GamaPoint;
+import gama.api.types.geometry.GamaPointFactory;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.matrix.IMatrix;
 import gama.core.util.matrix.GamaIntMatrix;
-import gama.core.util.matrix.IMatrix;
 import gama.plugin.webcam.operators.WebcamOperators;
 import gama.gaml.operators.spatial.SpatialCreation;
-import gama.gaml.types.IType;
 import georegression.struct.point.Point2D_I32;
 
 public class GeneralOperators {
@@ -108,7 +109,7 @@ public class GeneralOperators {
 			return GThresholdImageOps.computeLi(input, 0, 255) ;
 	   }
 	   
-	   @operator (
+	   @operator ( 
 				value = "to_binary_image",
 				can_be_const = false,
 				category = IOperatorCategory.LIST)
@@ -199,7 +200,7 @@ public class GeneralOperators {
 			for (Contour c : contours) {
 				IList<IShape> pts = GamaListFactory.create();
 				for (Point2D_I32 pt : c.external) {
-					pts.add(new GamaPoint(pt.x * coeffX, pt.y * coeffY) );
+					pts.add( GamaPointFactory.create(pt.x * coeffX, pt.y * coeffY) );
 				}
 				if (! pts.isEmpty()) {
 					lines.add(SpatialCreation.line(scope, pts));
@@ -208,7 +209,7 @@ public class GeneralOperators {
 				for (List<Point2D_I32> ppt : c.internal) {
 					IList<IShape> pts2= GamaListFactory.create();
 					for (Point2D_I32 pt :ppt) {
-						pts2.add(new GamaPoint(pt.x * coeffX, pt.y * coeffY) );
+						pts2.add(GamaPointFactory.create(pt.x * coeffX, pt.y * coeffY) );
 					}
 					if (! pts2.isEmpty()) 
 						lines.add(SpatialCreation.line(scope, pts2));

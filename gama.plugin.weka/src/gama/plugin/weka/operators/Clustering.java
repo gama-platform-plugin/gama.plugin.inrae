@@ -15,6 +15,7 @@ import gama.api.runtime.scope.IScope;
 import gama.api.types.list.GamaListFactory;
 import gama.api.types.list.IList;
 import gama.api.types.map.IMap;
+import gama.api.types.misc.IContainer;
 import weka.clusterers.Clusterer;
 import weka.clusterers.Cobweb;
 import weka.clusterers.DBSCAN;
@@ -34,14 +35,15 @@ public class Clustering {
 
 	
 	private static IList<IList<IAgent>> clusteringUsingWeka(final IScope scope, final Clusterer clusterer,
-		final IList<String> attributes, final IAddressableContainer<Integer, IAgent, Integer, IAgent> agents)
+		final IList<String> attributes, final IContainer agents)
 		throws GamaRuntimeException {
-		Instances dataset = InstanceManagement.convertToInstances(scope,null, attributes, null, agents.listValue(scope, Types.AGENT, false));
+		IList<IAgent> ags = agents.listValue(scope, Types.AGENT, false);
+		Instances dataset = InstanceManagement.convertToInstances(scope,null, attributes, null, ags);
 		try {
 			clusterer.buildClusterer(dataset);
 
 			IList<IList<IAgent>> groupes = GamaListFactory.create(Types.LIST.of(Types.AGENT));
-
+			
 			for ( int i = 0; i < clusterer.numberOfClusters(); i++ ) {
 				groupes.add(GamaListFactory.<IAgent> create(Types.AGENT));
 			}
@@ -50,9 +52,9 @@ public class Clustering {
 				int clusterIndex = -1;
 				clusterIndex = clusterer.clusterInstance(inst);
 				IList<IAgent> groupe = groupes.get(clusterIndex);
-				groupe.add(agents.get(scope, i));
+				groupe.add(ags.get(scope, i));
 			}
-			return groupes;
+			return groupes; 
 		} catch (Exception e) {
 			return null;
 		}
@@ -72,7 +74,7 @@ public class Clustering {
 			"clustering_cobweb" })
 	public static
 		IList<IList<IAgent>> primClusteringXMeans(final IScope scope,
-			final IAddressableContainer<Integer, IAgent, Integer, IAgent> agents, final IList<String> attributes,
+			final IContainer agents, final IList<String> attributes,
 			final IMap<String, Object> parameters) throws GamaRuntimeException {
 		XMeans xmeans = new XMeans();
 		xmeans.setSeed(Cast.asInt(scope, scope.getRandom().getSeed()));
@@ -134,7 +136,7 @@ public class Clustering {
 			"clustering_cobweb" })
 	public static
 		IList<IList<IAgent>> primClusteringSimpleKMeans(final IScope scope,
-			final IAddressableContainer<Integer, IAgent, Integer, IAgent> agents, final IList<String> attributes,
+			final IContainer agents, final IList<String> attributes,
 			final IMap<String, Object> parameters) {
 		SimpleKMeans kmeans = new SimpleKMeans();
 		kmeans.setSeed(Cast.asInt(scope, scope.getRandom().getSeed()));
@@ -181,7 +183,7 @@ public class Clustering {
 			"clustering_cobweb" })
 	public static
 		IList<IList<IAgent>> primClusteringEM(final IScope scope,
-			final IAddressableContainer<Integer, IAgent, Integer, IAgent> agents, final IList<String> attributes,
+			final IContainer agents, final IList<String> attributes,
 			final IMap<String, Object> parameters) {
 		EM em = new EM();
 		em.setSeed(Cast.asInt(scope, scope.getRandom().getSeed()));
@@ -219,7 +221,7 @@ public class Clustering {
 			"clustering_cobweb" })
 	public static
 		IList<IList<IAgent>> primClusteringFarthestFirst(final IScope scope,
-			final IAddressableContainer<Integer, IAgent, Integer, IAgent> agents, final IList<String> attributes,
+			final IContainer agents, final IList<String> attributes,
 			final IMap<String, Object> parameters) {
 		FarthestFirst ff = new FarthestFirst();
 		ff.setSeed(Cast.asInt(scope, scope.getRandom().getSeed()));
@@ -250,7 +252,7 @@ public class Clustering {
 			"clustering_cobweb" })
 	public static
 		IList<IList<IAgent>> primClusteringDBScan(final IScope scope,
-			final IAddressableContainer<Integer, IAgent, Integer, IAgent> agents, final IList<String> attributes,
+			final IContainer agents, final IList<String> attributes,
 			final IMap<String, Object> parameters) {
 		DBSCAN dbScan = new DBSCAN();
 
@@ -291,9 +293,9 @@ public class Clustering {
 			"clustering_cobweb" })
 	public static
 		IList<IList<IAgent>> primClusteringCobweb(final IScope scope,
-			final IAddressableContainer<Integer, IAgent, Integer, IAgent> agents, final IList<String> attributes,
+			final IContainer agents, final IList<String> attributes,
 			final IMap<String, Object> parameters) {
-		Cobweb cobweb = new Cobweb();
+		Cobweb cobweb = new Cobweb(); 
 		cobweb.setSeed(Cast.asInt(scope, scope.getRandom().getSeed()));
 
 		if ( parameters != null ) {

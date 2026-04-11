@@ -1,23 +1,29 @@
 package gama.plugin.imageanalysis.types;
 
-import gama.core.common.interfaces.IKeyword;
-import gama.core.metamodel.shape.GamaPoint;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.operator;
-import gama.annotations.precompiler.GamlAnnotations.type;
-import gama.annotations.precompiler.IConcept;
-import gama.annotations.precompiler.IOperatorCategory;
-import gama.annotations.precompiler.ITypeProvider;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
+import gama.annotations.doc;
+import gama.annotations.operator;
+import gama.annotations.type;
+import gama.annotations.constants.IKeyword;
+import gama.annotations.support.IConcept;
+import gama.annotations.support.IOperatorCategory;
+import gama.annotations.support.ITypeProvider;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.expressions.IExpression;
+import gama.api.gaml.types.GamaType;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.ITypesManager;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.GamaPoint;
 import gama.core.util.matrix.GamaIntMatrix;
-import gama.gaml.expressions.IExpression;
-import gama.gaml.types.GamaType;
-import gama.gaml.types.IType;
 
 @type(name = "pattern", id = PatternBlockType.id, wraps = { PatternBlock.class }, concept = { IConcept.TYPE, "pattern" })
 public class PatternBlockType extends GamaType<PatternBlock> {
-	public final static int id = IType.AVAILABLE_TYPES + 4563231;
+	public PatternBlockType(ITypesManager typesManager) {
+		super(typesManager);
+		// TODO Auto-generated constructor stub
+	}
+
+	public final static int id = IType.BEGINNING_OF_CUSTOM_TYPES + 4563231;
 
 	@Override
 	public PatternBlock getDefault() {

@@ -1,17 +1,18 @@
 package gama.plugin.imageanalysis.types;
 
-import gama.annotations.precompiler.GamlAnnotations.getter;
-import gama.annotations.precompiler.GamlAnnotations.variable;
-import gama.annotations.precompiler.GamlAnnotations.vars;
-import gama.core.common.interfaces.IValue;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.file.json.Json;
-import gama.core.util.file.json.JsonValue;
-import gama.gaml.expressions.IExpression;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
+import gama.annotations.getter;
+import gama.annotations.variable;
+import gama.annotations.vars;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.expressions.IExpression;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.IShape;
+import gama.api.types.misc.IValue;
+import gama.api.utils.json.IJson;
+import gama.api.utils.json.IJsonValue;
+import gama.core.util.json.Json;
 
 @vars({ @variable(name = "type", type = PatternBlockType.id), 
 		@variable(name = "shape", type = IType.GEOMETRY)})
@@ -66,10 +67,7 @@ public class PhysicalBlock implements IValue {
 		return serializeToJson(Json.getNew()).toString();
 	}
 
-	@Override
-	public JsonValue serializeToJson(Json json) {
-		return json.typedObject(getGamlType(), "pattern", pattern, "shape", shape);
-	}
+
 	
 	
 	@Override
@@ -83,6 +81,12 @@ public class PhysicalBlock implements IValue {
 		p.setPattern((PatternBlock) pattern.copy(scope));
 		p.setShape(shape.copy(scope));
 		return p;
+	}
+
+
+	@Override
+	public IJsonValue serializeToJson(IJson json) {
+		return json.typedObject(getGamlType(), "pattern", pattern, "shape", shape);
 	}
 
 	

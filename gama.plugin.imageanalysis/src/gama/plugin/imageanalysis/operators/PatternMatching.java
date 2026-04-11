@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
+
 import com.google.common.io.Files;
 
 import boofcv.alg.color.ColorRgb;
@@ -32,28 +34,29 @@ import boofcv.struct.image.GrayF32;
 import boofcv.struct.image.GrayU8;
 import boofcv.struct.image.ImageType;
 import boofcv.struct.image.Planar;
-import georegression.struct.point.Point2D_F64;
-import georegression.struct.point.Point2D_I32;
-import gama.core.common.geometry.Envelope3D;
-import gama.core.common.util.FileUtils;
-import gama.core.metamodel.shape.GamaPoint;
-import gama.core.metamodel.shape.IShape;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.operator;
-import gama.annotations.precompiler.IOperatorCategory;
-import gama.core.runtime.GAMA;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaListFactory;
-import gama.core.util.GamaPair;
-import gama.core.util.IList;
+import gama.annotations.doc;
+import gama.annotations.operator;
+import gama.annotations.support.IOperatorCategory;
+import gama.api.GAMA;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.GamaPoint;
+import gama.api.types.geometry.GamaPointFactory;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.matrix.IMatrix;
+import gama.api.types.pair.GamaPair;
+import gama.api.utils.files.FileUtils;
+import gama.api.utils.geometry.IEnvelope;
 import gama.core.util.matrix.GamaIntMatrix;
-import gama.core.util.matrix.IMatrix;
 import gama.plugin.imageanalysis.boofcv.RemovePerspectiveDistortion;
 import gama.plugin.imageanalysis.types.PatternBlock;
 import gama.plugin.imageanalysis.types.PhysicalBlock;
 import gama.plugin.webcam.operators.WebcamOperators;
 import gama.plugin.webcam.types.GamaWebcam;
+import georegression.struct.point.Point2D_F64;
+import georegression.struct.point.Point2D_I32;
 
 public class PatternMatching {
 	// hdtrung - save 4 selected points of map: top-left, top-right, bottom-right, bottom-left
@@ -188,7 +191,7 @@ public class PatternMatching {
     public static IList<PhysicalBlock> classifyCode(final IScope scope, final List<BufferedImage> images, IList<PatternBlock> patterns, double thresholdMaxBlack, double thresholdMinWhite, int cols, int rows, double x0, double y0, double cx, double cy, float coeffContrast, boolean saveImage, boolean improveImage){
         int nbR = 0;
         int nbC = 0;
-        Envelope3D envbounds = scope.getSimulation().getGeometry().getEnvelope() ;
+        IEnvelope envbounds = scope.getSimulation().getGeometry().getEnvelope() ;
 		double coeffX = envbounds.getWidth() / cols;
 		double coeffY=  envbounds.getHeight() /rows;
 		thresholdMaxBlack *= coeffContrast;
@@ -214,7 +217,7 @@ public class PatternMatching {
     		int cpt2 = 0;
     		for ( BufferedImage img  : images) {
         		GamaIntMatrix l = new GamaIntMatrix(nbR, nbC);
-        	     
+        	      
         		int width = img.getWidth()/nbC;
 	            int height = img.getHeight()/nbR;
 	            for (int i = 0; i < nbC; i++){
@@ -260,7 +263,7 @@ public class PatternMatching {
 	            	}
 	            }
 	            cpt2 ++;
-	            block.setShape(new GamaPoint((x_g *  coeffX + coeffX/2) * cx + x0, (y_g * coeffY + coeffY/2) * cy + y0));
+	            block.setShape(GamaPointFactory.create((x_g *  coeffX + coeffX/2) * cx + x0, (y_g * coeffY + coeffY/2) * cy + y0));
 	            y_g ++; 
 	            if (y_g >= rows) {
 	            	y_g = 0;
@@ -295,10 +298,10 @@ public class PatternMatching {
 		}
 		if (tmpBfrImage == null)
 			GAMA.reportError(scope, GamaRuntimeException.error("Problem when reading file " + image_path, scope), true);
-		Envelope3D envbounds = bounds == null ?scope.getSimulation().getGeometry().getEnvelope() : bounds.getEnvelope();
+		IEnvelope envbounds = bounds == null ?scope.getSimulation().getGeometry().getEnvelope() : bounds.getEnvelope();
 		double coeffX = tmpBfrImage.getWidth() / envbounds.getWidth();
 		double coeffY= tmpBfrImage.getHeight()/ envbounds.getHeight();
-		Envelope3D env = geometry.getEnvelope();
+		IEnvelope env = geometry.getEnvelope();
 		BufferedImage dest = tmpBfrImage.getSubimage((int) Math.round((env.getMinX() - envbounds.getMinX()) * coeffX), (int) Math.round((env.getMinY()  - envbounds.getMinY())* coeffY), (int) Math.round(env.getWidth() * coeffX), (int) Math.round( env.getHeight() * coeffY));
 		File outputfile = new File(FileUtils.constructAbsoluteFilePath(scope, pattern_path, false));
 		try {
@@ -362,7 +365,7 @@ public class PatternMatching {
     	if (points.size() != 4) {
     		GAMA.reportError(scope, GamaRuntimeException.error("4 points have to be defined (top-left, top-right, bottom-right, bottom-left)", scope), true);
     	}
-    	Envelope3D envbounds = scope.getSimulation().getGeometry().getEnvelope() ;
+    	IEnvelope envbounds = scope.getSimulation().getGeometry().getEnvelope() ;
 		double coeffX = tmpBfrImage.getWidth() / envbounds.getWidth();
 		double coeffY= tmpBfrImage.getHeight()/ envbounds.getHeight();
 		Planar<GrayF32> input = ConvertBufferedImage.convertFromPlanar(tmpBfrImage, null, true, GrayF32.class);
@@ -482,9 +485,9 @@ public class PatternMatching {
     
     static private List<Double> computeThresholdBlackIntensity(final IScope scope, BufferedImage image, IShape blacksubBlock, IShape whitesubBlock, double tolerance, boolean saveImage, boolean improveImage ) {
 
-    	Envelope3D env = scope.getSimulation().getGeometry().getEnvelope();
+    	IEnvelope env = scope.getSimulation().getGeometry().getEnvelope();
     	
-    	Envelope3D envB = blacksubBlock.getEnvelope();
+    	IEnvelope envB = blacksubBlock.getEnvelope();
     	 if (improveImage)
     		 image = improveImage(image);
     	BufferedImage blackIm = image.getSubimage((int)(envB.getMinX() / env.getWidth() * image.getWidth()), (int)(envB.getMinY() / env.getHeight() * image.getHeight()), (int)(envB.getWidth() / env.getWidth() * image.getWidth()), (int)(envB.getHeight() / env.getHeight() * image.getHeight()));
@@ -499,7 +502,7 @@ public class PatternMatching {
     	}
     	
        
-    	Envelope3D envW = whitesubBlock.getEnvelope();
+    	IEnvelope envW = whitesubBlock.getEnvelope();
     	BufferedImage whiteIm = image.getSubimage((int)(envW.getMinX() / env.getWidth() * image.getWidth()), (int)(envW.getMinY() / env.getHeight() * image.getHeight()), (int)(envW.getWidth() / env.getWidth() * image.getWidth()), (int)(envW.getHeight() / env.getHeight() * image.getHeight()));
     	double wI = getBlackIntensity(whiteIm);
     	
@@ -608,7 +611,7 @@ public class PatternMatching {
 					outputfolder.mkdir();
 				}
 			}
-    		Envelope3D env = scope.getSimulation().getGeometry().getEnvelope();
+			IEnvelope env = scope.getSimulation().getGeometry().getEnvelope();
         	int expectedW = (int)(bounds.getWidth() / env.getWidth() * image.getWidth()); 
     		int expectedH = (int)(bounds.getHeight() / env.getHeight() * image.getHeight());
     		List<Double> th =  computeThresholdBlackIntensity(scope, image, blacksubBlock, whitesubBlock, tolerance,saveImage, improveImage);
@@ -629,7 +632,7 @@ public class PatternMatching {
     	}
     	
     	List<BufferedImage> imageGrid = cropGrid(imageWD, cols, rows, expectedW, expectedH, threshLow,  threshHigh );
-    	Envelope3D envbounds = scope.getSimulation().getGeometry().getEnvelope() ;
+    	IEnvelope envbounds = scope.getSimulation().getGeometry().getEnvelope() ;
  		
     	double x0 = Double.MAX_VALUE; double y0 = Double.MAX_VALUE; double xM = 0; double yM = 0;
     	if ((distorsionPoint != null && (distorsionPoint.size() == 4))) {
@@ -656,7 +659,7 @@ public class PatternMatching {
 		int xSize, ySize;
 		BufferedImage resultingImage = image;
 		xSize = image.getWidth();
-		ySize = image.getHeight();
+		ySize = image.getHeight(); 
 		final IMatrix<Integer> matrix = new GamaIntMatrix(xSize, ySize);
 		for (int i = 0; i < xSize; i++) {
 			for (int j = 0; j < ySize; j++) {

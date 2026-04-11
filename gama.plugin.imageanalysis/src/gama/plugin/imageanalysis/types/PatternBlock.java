@@ -1,18 +1,20 @@
 package gama.plugin.imageanalysis.types;
 
-import gama.annotations.precompiler.GamlAnnotations.getter;
-import gama.annotations.precompiler.GamlAnnotations.variable;
-import gama.annotations.precompiler.GamlAnnotations.vars;
-import gama.core.common.interfaces.IValue;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.file.json.Json;
-import gama.core.util.file.json.JsonValue;
+import gama.annotations.getter;
+import gama.annotations.variable;
+import gama.annotations.vars;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.expressions.IExpression;
+import gama.api.gaml.types.GamaMatrixType;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.misc.IValue;
+import gama.api.utils.json.IJson;
+import gama.api.utils.json.IJsonValue;
+import gama.core.util.json.Json;
+import gama.core.util.json.JsonValue;
 import gama.core.util.matrix.GamaIntMatrix;
-import gama.gaml.expressions.IExpression;
-import gama.gaml.types.GamaMatrixType;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
 
 @vars({ @variable(name = "id", type = IType.STRING), 
 		@variable(name = "val", type = IType.MATRIX)})
@@ -82,8 +84,9 @@ public class PatternBlock implements IValue {
 		p.setMatrix((GamaIntMatrix) getMatrix().copy(scope));
 		return p;
 	}
+	
 	@Override
-	public JsonValue serializeToJson(Json json) {
+	public IJsonValue serializeToJson(IJson json) {
 		// TODO Auto-generated method stub
 		return matrix.serializeToJson(json);
 	}
