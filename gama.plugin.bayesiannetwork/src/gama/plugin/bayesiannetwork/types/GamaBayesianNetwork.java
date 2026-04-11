@@ -8,8 +8,10 @@ import cc.kave.repackaged.jayes.inference.IBayesInferer;
 import cc.kave.repackaged.jayes.inference.junctionTree.JunctionTreeAlgorithm;
 import gama.annotations.getter;
 import gama.annotations.variable;
+import gama.annotations.vars;
 import gama.api.exceptions.GamaRuntimeException;
 import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
 import gama.api.runtime.scope.IScope;
 import gama.api.types.list.GamaListFactory;
 import gama.api.types.list.IList;
@@ -81,16 +83,10 @@ public class GamaBayesianNetwork  implements IValue{
 		return bayes;
 	}
 
-	@Override
-	public JsonValue serializeToJson(Json json) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public IType<?> getGamlType() {
-		// TODO Auto-generated method stub
-		return null;
+		return Types.get(GamaBayesianNetworkType.id);
 	}
 
 	@Override

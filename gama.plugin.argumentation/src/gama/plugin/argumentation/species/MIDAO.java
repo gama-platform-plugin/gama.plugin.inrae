@@ -544,7 +544,7 @@ public class MIDAO extends GamlAgent {
 				double acc = argumentAcceptability.get(arg);
 				knownArguments.get(arg).key = acc;
 				
-				if (arg.getConclusion().equals("+")) {
+				if (arg.getConclusion().equals("+")) { 
 					attitude += acc;
 				} else if (arg.getConclusion().equals("-")) {
 					attitude += (- 1)* acc;
@@ -692,7 +692,7 @@ public class MIDAO extends GamlAgent {
 			kArgs.put(arg, v);
 		} else {
 			
-			GamaPair<Double, Double> v = new GamaPair<Double, Double>(0.0, getArgumentLifespan(agentRec), Types.FLOAT, Types.FLOAT);
+			GamaPair<Double, Double> v = (GamaPair<Double, Double>) GamaPairFactory.createWith(0.0, getArgumentLifespan(agentRec), Types.FLOAT, Types.FLOAT);
 			kArgs.put(arg, v);
 			setKnownArguments(agentRec, kArgs);
 			

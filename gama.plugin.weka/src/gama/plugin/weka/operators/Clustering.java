@@ -1,21 +1,34 @@
 package gama.plugin.weka.operators;
 
 
-import gama.core.metamodel.agent.IAgent;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.example;
-import gama.annotations.precompiler.GamlAnnotations.operator;
-import gama.annotations.precompiler.*;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.*;
-import gama.gaml.operators.Cast;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
-import weka.clusterers.*;
+import gama.annotations.doc;
+import gama.annotations.example;
+import gama.annotations.operator;
+import gama.annotations.support.IConcept;
+import gama.annotations.support.IOperatorCategory;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.types.Cast;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.map.IMap;
+import weka.clusterers.Clusterer;
+import weka.clusterers.Cobweb;
+import weka.clusterers.DBSCAN;
+import weka.clusterers.EM;
+import weka.clusterers.FarthestFirst;
+import weka.clusterers.SimpleKMeans;
+import weka.clusterers.XMeans;
 import weka.clusterers.forOPTICSAndDBScan.DataObjects.ManhattanDataObject;
-import weka.core.*;
+import weka.core.ChebyshevDistance;
+import weka.core.EditDistance;
+import weka.core.EuclideanDistance;
 import weka.core.Instance;
+import weka.core.Instances;
+import weka.core.ManhattanDistance;
 
 public class Clustering {
 
