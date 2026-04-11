@@ -116,7 +116,7 @@ species hunter schedules: [] {
 	}
 
 	reflex starving when: energy < 0 {
-		do die;
+		do die();
 	}
 
 	reflex reproduce when: energy > 50 {
