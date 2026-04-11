@@ -4,35 +4,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import gama.annotations.precompiler.GamlAnnotations.action;
-import gama.annotations.precompiler.GamlAnnotations.arg;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.example;
-import gama.annotations.precompiler.GamlAnnotations.getter;
-import gama.annotations.precompiler.GamlAnnotations.setter;
-import gama.annotations.precompiler.GamlAnnotations.species;
-import gama.annotations.precompiler.GamlAnnotations.variable;
-import gama.annotations.precompiler.GamlAnnotations.vars;
-import gama.core.metamodel.agent.GamlAgent;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.population.IPopulation;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaListFactory;
-import gama.core.util.GamaMapFactory;
-import gama.core.util.GamaPair;
-import gama.core.util.IList;
-import gama.core.util.IMap;
-import gama.core.util.graph.IGraph;
+import gama.annotations.action;
+import gama.annotations.arg;
+import gama.annotations.doc;
+import gama.annotations.example;
+import gama.annotations.getter;
+import gama.annotations.setter;
+import gama.annotations.species;
+import gama.annotations.variable;
+import gama.annotations.vars;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.GAML;
+import gama.api.gaml.statements.IStatement.WithArgs;
+import gama.api.gaml.symbols.Arguments;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.kernel.agent.IPopulation;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.graph.IGraph;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.map.GamaMapFactory;
+import gama.api.types.map.IMap;
+import gama.api.types.pair.GamaPair;
+import gama.api.types.pair.GamaPairFactory;
+import gama.core.agent.GamlAgent;
+import gama.gaml.descriptions.ConstantExpressionDescription;
+import gama.gaml.operators.Random;
 import gama.plugin.argumentation.skills.ArgumentingSkill;
 import gama.plugin.argumentation.types.GamaArgument;
 import gama.plugin.argumentation.types.GamaArgumentType;
-import gama.gaml.descriptions.ConstantExpressionDescription;
-import gama.gaml.operators.Random;
-import gama.gaml.statements.Arguments;
-import gama.gaml.statements.IStatement.WithArgs;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
 
 
 @species (
@@ -441,8 +443,10 @@ public class MIDAO extends GamlAgent {
 		boolean updateArgs = false;
 		for(GamaArgument arg :args) {
 			GamaPair<Double, Double> v = knownArguments.get(arg);
-			v.value -= step;
-			if (v.value <= 0.0) {
+			double val = v.value();
+			val -= step; 
+			knownArguments.put(arg, (GamaPair<Double, Double>) GamaPairFactory.createWith(v.key(), val));
+			if (val <= 0.0) {
 				ArgumentingSkill.getArgGraph(agent).removeVertex(arg);
 				knownArguments.remove(arg);
 				updateArgs = true;
@@ -829,7 +833,7 @@ public class MIDAO extends GamlAgent {
 	private Object doAction1Arg(final IScope scope, final String actionName, final String argName,
 			final Object ArgVal) {
 		Arguments args = new Arguments();
-		args.put(argName, ConstantExpressionDescription.createNoCache(ArgVal));
+		args.put(argName, GAML.getExpressionDescriptionFactory().createConstantNoCache(ArgVal));
 		WithArgs act = getAgent().getSpecies().getAction(actionName);
 		act.setRuntimeArgs(scope, args);
 		return act.executeOn(scope);
@@ -838,8 +842,8 @@ public class MIDAO extends GamlAgent {
 	private Object doAction2Arg(final IScope scope, final String actionName, final String argName1,
 			final Object ArgVal1, final String argName2, final Object ArgVal2) {
 		Arguments args = new Arguments();
-		args.put(argName1, ConstantExpressionDescription.createNoCache(ArgVal1));
-		args.put(argName2, ConstantExpressionDescription.createNoCache(ArgVal2));
+		args.put(argName1, GAML.getExpressionDescriptionFactory().createConstantNoCache(ArgVal1));
+		args.put(argName2, GAML.getExpressionDescriptionFactory().createConstantNoCache(ArgVal2));
 		WithArgs act = getAgent().getSpecies().getAction(actionName);
 		act.setRuntimeArgs(scope, args);
 		return act.executeOn(scope);
@@ -849,12 +853,12 @@ public class MIDAO extends GamlAgent {
 	private Object doAction3Arg(final IScope scope, final String actionName, final String argName1,
 			final Object ArgVal1, final String argName2, final Object ArgVal2, final String argName3,
 			final Object ArgVal3) {
-		Arguments args = new Arguments();
+		Arguments args = new Arguments();  
 		
 		
-		args.put(argName1, ConstantExpressionDescription.createNoCache(ArgVal1));
-		args.put(argName2, ConstantExpressionDescription.createNoCache(ArgVal2));
-		args.put(argName3, ConstantExpressionDescription.createNoCache(ArgVal3));
+		args.put(argName1, GAML.getExpressionDescriptionFactory().createConstantNoCache(ArgVal1));
+		args.put(argName2, GAML.getExpressionDescriptionFactory().createConstantNoCache(ArgVal2));
+		args.put(argName3, GAML.getExpressionDescriptionFactory().createConstantNoCache(ArgVal3));
 		WithArgs act = getAgent().getSpecies().getAction(actionName);
 		act.setRuntimeArgs(scope, args);
 		return act.executeOn(scope);
@@ -864,11 +868,11 @@ public class MIDAO extends GamlAgent {
 			final Object ArgVal3, final String argName4, final Object ArgVal4,final String argName5, final Object ArgVal5) {
 		Arguments args = new Arguments();
 		args.put(argName1, 
-				ConstantExpressionDescription.createNoCache(ArgVal1));
-		args.put(argName2, ConstantExpressionDescription.createNoCache(ArgVal2));
-		args.put(argName3, ConstantExpressionDescription.createNoCache(ArgVal3));
-		args.put(argName4, ConstantExpressionDescription.createNoCache(ArgVal4));
-		args.put(argName5, ConstantExpressionDescription.createNoCache(ArgVal5));
+				GAML.getExpressionDescriptionFactory().createConstantNoCache(ArgVal1));
+		args.put(argName2, GAML.getExpressionDescriptionFactory().createConstantNoCache(ArgVal2));
+		args.put(argName3, GAML.getExpressionDescriptionFactory().createConstantNoCache(ArgVal3));
+		args.put(argName4, GAML.getExpressionDescriptionFactory().createConstantNoCache(ArgVal4));
+		args.put(argName5, GAML.getExpressionDescriptionFactory().createConstantNoCache(ArgVal5));
 		WithArgs act = getAgent().getSpecies().getAction(actionName);
 		act.setRuntimeArgs(scope, args);
 		return act.executeOn(scope);

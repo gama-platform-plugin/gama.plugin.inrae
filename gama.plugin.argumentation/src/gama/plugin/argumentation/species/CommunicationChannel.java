@@ -1,17 +1,17 @@
 package gama.plugin.argumentation.species;
 
-import gama.annotations.precompiler.GamlAnnotations.getter;
-import gama.annotations.precompiler.GamlAnnotations.setter;
-import gama.annotations.precompiler.GamlAnnotations.species;
-import gama.annotations.precompiler.GamlAnnotations.variable;
-import gama.annotations.precompiler.GamlAnnotations.vars;
-import gama.core.metamodel.agent.GamlAgent;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.population.IPopulation;
-import gama.core.util.IList;
+import gama.annotations.getter;
+import gama.annotations.setter;
+import gama.annotations.species;
+import gama.annotations.variable;
+import gama.annotations.vars;
+import gama.api.gaml.types.IType;
+import gama.api.kernel.agent.IAgent;
+import gama.api.kernel.agent.IPopulation;
+import gama.api.types.list.IList;
+import gama.core.agent.GamlAgent;
 import gama.plugin.argumentation.types.GamaArgument;
 import gama.plugin.argumentation.types.GamaArgumentType;
-import gama.gaml.types.IType;
 
 @species (
 		name = "abstract_communication_channel")

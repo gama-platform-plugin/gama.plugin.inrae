@@ -7,8 +7,10 @@ Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: gama.plugin.bayesiannetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-25
 Require-Bundle: gama.core;bundle-version="0.0.0",
- gama.dependencies;bundle-version="0.0.0",gama.annotations,
- gama.processor,gama.api
+ gama.annotations, 
+ gama.dependencies;bundle-version="0.0.0",
+ gama.processor,
+ gama.api
 Bundle-ClassPath: lib/jayes-0.0.2.jar,
  .
 Export-Package: gama.plugin.bayesiannetwork.operators,

@@ -26,27 +26,26 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.multi.GenericMultipleBarcodeReader;
 import com.google.zxing.multi.MultipleBarcodeReader;
 
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.operator;
-import gama.annotations.precompiler.IOperatorCategory;
-import gama.core.common.util.FileUtils;
-import gama.core.metamodel.shape.GamaPoint;
-import gama.core.metamodel.shape.GamaShape;
-import gama.core.runtime.GAMA;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaListFactory;
-import gama.core.util.GamaMapFactory;
-import gama.core.util.GamaPair;
-import gama.core.util.IList;
+import gama.annotations.doc;
+import gama.annotations.operator;
+import gama.annotations.support.IOperatorCategory;
+import gama.api.GAMA;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.GamaPoint;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.map.GamaMapFactory;
+import gama.api.types.matrix.IMatrix;
+import gama.api.types.pair.GamaPair;
+import gama.api.utils.files.FileUtils;
+import gama.core.geometry.GamaShape;
 import gama.core.util.matrix.GamaIntMatrix;
 import gama.core.util.matrix.GamaMatrix;
 import gama.core.util.matrix.GamaObjectMatrix;
-import gama.core.util.matrix.IMatrix;
 import gama.plugin.webcam.operators.WebcamOperators;
 import gama.plugin.webcam.types.GamaWebcam;
 import gama.gaml.operators.spatial.SpatialCreation;
-import gama.gaml.types.Types;
 
 public class Operators {
 	

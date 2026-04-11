@@ -4,20 +4,20 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import gama.annotations.precompiler.GamlAnnotations.operator;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.runtime.IScope;
-import gama.core.util.GamaListFactory;
-import gama.core.util.GamaMap;
-import gama.core.util.GamaMapFactory;
-import gama.core.util.IList;
-import gama.core.util.file.GamaFile;
+import gama.annotations.operator;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.file.GamaFile;
+import gama.api.types.graph.IGraph;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.map.GamaMap;
+import gama.api.types.map.GamaMapFactory;
+import gama.api.types.matrix.IMatrix;
 import gama.core.util.graph.GamaGraph;
-import gama.core.util.graph.IGraph;
-import gama.core.util.matrix.IMatrix;
 import gama.plugin.argumentation.types.GamaArgument;
 import gama.plugin.argumentation.types.GamaArgumentType;
-import gama.gaml.types.Types;
 
 public class ArgumentationOperators {
 

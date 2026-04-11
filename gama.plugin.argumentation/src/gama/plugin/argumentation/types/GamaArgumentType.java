@@ -1,20 +1,26 @@
 package gama.plugin.argumentation.types;
 
-import gama.core.metamodel.agent.IAgent;
-import gama.annotations.precompiler.IConcept;
-import gama.annotations.precompiler.GamlAnnotations.type;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaMap;
-import gama.core.util.GamaMapFactory;
-import gama.gaml.types.GamaType;
-import gama.gaml.types.IType;
+import gama.annotations.type;
+import gama.annotations.support.IConcept;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.types.GamaType;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.ITypesManager;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.map.GamaMap;
+import gama.api.types.map.GamaMapFactory;
 
 
 @type(name = "argument", id = GamaArgumentType.id, wraps = { GamaArgument.class }, concept = { IConcept.TYPE, "Argumentation" })
 public class GamaArgumentType extends GamaType<GamaArgument> {
 
-	public final static int id = IType.AVAILABLE_TYPES + 175769875;
+	public GamaArgumentType(ITypesManager typesManager) {
+		super(typesManager);
+		// TODO Auto-generated constructor stub
+	}
+
+	public final static int id = IType.BEGINNING_OF_CUSTOM_TYPES + 175769875;
 
 	@Override
 	public boolean canCastToConst() {

@@ -61,10 +61,13 @@ import ifc2x3javatoolbox.ifc2x3tc1.IfcTypeObject;
 import ifc2x3javatoolbox.ifc2x3tc1.IfcWall;
 import ifc2x3javatoolbox.ifc2x3tc1.IfcWindow;
 import ifc4javatoolbox.ifcmodel.IfcModel;
+import gama.annotations.constants.IKeyword;
 import gama.annotations.support.IConcept;
+import gama.api.GAMA;
 import gama.api.exceptions.GamaRuntimeException;
 import gama.api.gaml.types.GamaGeometryType;
 import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
 import gama.api.runtime.scope.IScope;
 import gama.api.types.geometry.GamaPoint;
 import gama.api.types.geometry.GamaPointFactory;
@@ -72,6 +75,7 @@ import gama.api.types.geometry.IPoint;
 import gama.api.types.geometry.IShape;
 import gama.api.types.list.GamaListFactory;
 import gama.api.types.list.IList;
+import gama.api.utils.geometry.GeometryUtils;
 import gama.core.util.file.GamaGeometryFile;
 import gama.gaml.operators.spatial.*;
 
@@ -547,7 +551,7 @@ public class GamaIFCFile extends GamaGeometryFile {
 						box.setAttribute(IKeyword.NAME, s.getName().getDecodedValue());
 						newAxe.transform(box);
 						addAttribtutes(s, box);
-						return box;
+						return box; 
 					} else if (solid.getSweptArea() instanceof IfcArbitraryClosedProfileDef) {
 						final IfcArbitraryClosedProfileDef profil = (IfcArbitraryClosedProfileDef) solid.getSweptArea();
 						final IfcCurve curve = profil.getOuterCurve();
@@ -738,7 +742,7 @@ public class GamaIFCFile extends GamaGeometryFile {
 		if (didFillBuffer) {
 			final GamaPoint vect = new GamaPoint(-env.getMinX(), -env.getMinY(), -env.getMinZ());
 			final IList<IShape> newBuffer = GamaListFactory.create(Types.GEOMETRY);
-			for (final IShape buff : getBuffer()) {
+			for (final IShape buff : getBuffer()) { 
 				newBuffer.add(SpatialTransformations.translated_by(scope, buff, vect));
 			}
 			setBuffer(newBuffer);

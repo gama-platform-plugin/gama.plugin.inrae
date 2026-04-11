@@ -16,3 +16,4 @@ Bundle-ClassPath: lib/jArgSemSAT.jar,
  lib/org.sat4j.core-2.3.1.jar,
  .
 Bundle-RequiredExecutionEnvironment: JavaSE-25
+Import-Package: gaml.compiler.descriptions

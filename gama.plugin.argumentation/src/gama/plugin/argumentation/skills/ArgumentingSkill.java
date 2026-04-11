@@ -8,35 +8,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import gama.annotations.precompiler.GamlAnnotations.action;
-import gama.annotations.precompiler.GamlAnnotations.arg;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.example;
-import gama.annotations.precompiler.GamlAnnotations.getter;
-import gama.annotations.precompiler.GamlAnnotations.setter;
-import gama.annotations.precompiler.GamlAnnotations.skill;
-import gama.annotations.precompiler.GamlAnnotations.variable;
-import gama.annotations.precompiler.GamlAnnotations.vars;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaListFactory;
-import gama.core.util.GamaMapFactory;
-import gama.core.util.GamaPair;
-import gama.core.util.IList;
-import gama.core.util.IMap;
+import gama.annotations.action;
+import gama.annotations.arg;
+import gama.annotations.doc;
+import gama.annotations.example;
+import gama.annotations.getter;
+import gama.annotations.setter;
+import gama.annotations.skill;
+import gama.annotations.variable;
+import gama.annotations.vars;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.GAML;
+import gama.api.gaml.statements.IStatement;
+import gama.api.gaml.symbols.Arguments;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.kernel.skill.Skill;
+import gama.api.kernel.species.ISpecies;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.graph.IGraph;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.map.GamaMapFactory;
+import gama.api.types.map.IMap;
+import gama.api.types.pair.GamaPair;
+import gama.api.types.pair.GamaPairFactory;
 import gama.core.util.graph.GamaGraph;
-import gama.core.util.graph.IGraph;
+import gama.gaml.operators.Random;
 import gama.plugin.argumentation.types.GamaArgument;
 import gama.plugin.argumentation.types.GamaArgumentType;
-import gama.gaml.descriptions.ConstantExpressionDescription;
-import gama.gaml.operators.Random;
-import gama.gaml.skills.Skill;
-import gama.gaml.species.ISpecies;
-import gama.gaml.statements.Arguments;
-import gama.gaml.statements.IStatement;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
 import net.sf.jargsemsat.jargsemsat.datastructures.DungAF;
 
 @skill(name = "argumenting")
@@ -62,7 +63,7 @@ public class ArgumentingSkill extends Skill {
 
 	@setter(ARGUMENTATION_GRAPH)
 	static public void setArgGraph(final IAgent agent, final IGraph s) {
-		agent.setAttribute(ARGUMENTATION_GRAPH, s);
+		agent.setAttribute(ARGUMENTATION_GRAPH, s); 
 	}
 
 	@getter(CRIT_IMPORTANCE)
@@ -182,7 +183,7 @@ public class ArgumentingSkill extends Skill {
 			final ISpecies context = ag.getSpecies();
 			final IStatement.WithArgs evalArgAct = context.getAction("evaluate_argument");
 			final Arguments argsTNR = new Arguments();
-			argsTNR.put("argument", ConstantExpressionDescription.create(source));
+			argsTNR.put("argument", GAML.getExpressionDescriptionFactory().createConstantNoCache(source));
 			evalArgAct.setRuntimeArgs(scope, argsTNR);
 			Double weight = (Double) evalArgAct.executeOn(scope);
 			graph.setEdgeWeight(edge, weight);
@@ -220,7 +221,8 @@ public class ArgumentingSkill extends Skill {
 		final Arguments argsTNR = new Arguments();
 
 		for (Object v : graph.getVertices()) {
-			argsTNR.put("argument", ConstantExpressionDescription.create(v));
+			argsTNR.put("argument", GAML.getExpressionDescriptionFactory().createConstantNoCache(v));
+			
 			evalArgAct.setRuntimeArgs(scope, argsTNR);
 			Double val = (Double) evalArgAct.executeOn(scope);
 			Set edges = graph.outgoingEdgesOf(v);
@@ -270,7 +272,8 @@ public class ArgumentingSkill extends Skill {
 		double sum = 0;
 		for (Object obj : args) {
 			GamaArgument arg = (GamaArgument) obj;
-			argsTNR.put("argument", ConstantExpressionDescription.create(arg));
+
+			argsTNR.put("argument", GAML.getExpressionDescriptionFactory().createConstantNoCache(arg));
 			evalArgAct.setRuntimeArgs(scope, argsTNR);
 			Double w = (Double) evalArgAct.executeOn(scope);
 			sum += w;
@@ -355,7 +358,7 @@ public class ArgumentingSkill extends Skill {
 				maxVal = v;
 			}
 		}
-		return new GamaPair<IList<GamaArgument>, Double>(res,  extensionsEvaluations.get(res), Types.LIST, Types.FLOAT);
+		return (GamaPair<IList<GamaArgument>, Double>) GamaPairFactory.createWith(res,  extensionsEvaluations.get(res), Types.LIST, Types.FLOAT);
 	}
 	
 	@action(name = "evaluate_extensions")
@@ -370,7 +373,7 @@ public class ArgumentingSkill extends Skill {
 
 		final IStatement.WithArgs extensionComputation = context.getAction("extensions");
 		final Arguments argsComputeExts = new Arguments();
-		argsComputeExts.put("graph", ConstantExpressionDescription.create(simplifiedGraph));
+		argsComputeExts.put("graph", GAML.getExpressionDescriptionFactory().createConstantNoCache(simplifiedGraph));
 		extensionComputation.setRuntimeArgs(scope, argsComputeExts);
 		IList<IList<GamaArgument>> extensions = (IList<IList<GamaArgument>>) extensionComputation.executeOn(scope);
 		
@@ -380,7 +383,7 @@ public class ArgumentingSkill extends Skill {
 		final Arguments argsComputeValExtension = new Arguments();
 		IList args = extensions.get(0);
 		for (IList ext : extensions) {
-			argsComputeValExtension.put("arguments", ConstantExpressionDescription.create(ext));
+			argsComputeValExtension.put("arguments",GAML.getExpressionDescriptionFactory().createConstantNoCache(ext));
 			valExtension.setRuntimeArgs(scope, argsComputeValExtension);
 			resultMap.addValueAtIndex(scope, ext, (Double) valExtension.executeOn(scope));
 		}
