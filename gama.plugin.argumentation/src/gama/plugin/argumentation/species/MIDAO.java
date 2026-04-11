@@ -30,7 +30,6 @@ import gama.api.types.map.IMap;
 import gama.api.types.pair.GamaPair;
 import gama.api.types.pair.GamaPairFactory;
 import gama.core.agent.GamlAgent;
-import gama.gaml.descriptions.ConstantExpressionDescription;
 import gama.gaml.operators.Random;
 import gama.plugin.argumentation.skills.ArgumentingSkill;
 import gama.plugin.argumentation.types.GamaArgument;
@@ -542,7 +541,8 @@ public class MIDAO extends GamlAgent {
 			IMap<GamaArgument, Double> argumentAcceptability = (IMap<GamaArgument, Double>) doAction2Arg(scope, "get_arguments_acceptabilities", "agent", agent, "semantics", getSemantics(agent));
 			for(GamaArgument arg : argumentAcceptability.keySet()) {
 				double acc = argumentAcceptability.get(arg);
-				knownArguments.get(arg).key = acc;
+				GamaPair<Double, Double> v = knownArguments.get(arg);
+				knownArguments.put(arg, (GamaPair<Double, Double>) GamaPairFactory.createWith(acc, v.value()));
 				
 				if (arg.getConclusion().equals("+")) { 
 					attitude += acc;
@@ -626,7 +626,7 @@ public class MIDAO extends GamlAgent {
 		IMap<GamaArgument, Double> args = GamaMapFactory.create();
 		IMap<GamaArgument,GamaPair<Double, Double>> kas = getKnownArguments(agent);
 		for(GamaArgument a : kas.keySet()) {
-			args.put(a, kas.get(a).key);
+			args.put(a, kas.get(a).key());
 		}
 		GamaArgument argProposed = Random.opRndCoice(scope, args);
 		
@@ -688,8 +688,8 @@ public class MIDAO extends GamlAgent {
 		IMap<GamaArgument, GamaPair<Double,Double>> kArgs = getKnownArguments(agentRec);
 		if (kArgs.keySet().contains(arg)) {
 			GamaPair<Double, Double> v = kArgs.get(arg);
-			v.setValue(getArgumentLifespan(agentRec));
-			kArgs.put(arg, v);
+			GamaPair<Double, Double> v2 = (GamaPair<Double, Double>) GamaPairFactory.createWith(v.key(), getArgumentLifespan(agentRec));
+			kArgs.put(arg, v2);
 		} else {
 			
 			GamaPair<Double, Double> v = (GamaPair<Double, Double>) GamaPairFactory.createWith(0.0, getArgumentLifespan(agentRec), Types.FLOAT, Types.FLOAT);
@@ -718,8 +718,8 @@ public class MIDAO extends GamlAgent {
 		
 		IMap<GamaArgument, GamaPair<Double,Double>> kArgs = getKnownArguments(agentPop);
 		GamaPair<Double, Double> v = kArgs.get(arg);
-		v.setValue(getArgumentLifespan(agentPop));
-		kArgs.put(arg, v);
+		GamaPair<Double, Double> v2 = (GamaPair<Double, Double>) GamaPairFactory.createWith(v.key(), getArgumentLifespan(agentPop));
+		kArgs.put(arg, v2);
 		
 		IList<GamaArgument> arguments = (IList<GamaArgument>) scope.getArg("arguments_exchanged",IType.LIST);
 		final IGraph<GamaArgument, Object> refGraph = scope.hasArg("graph") ? (IGraph) scope.getArg("graph", IType.GRAPH) : null;
@@ -786,7 +786,7 @@ public class MIDAO extends GamlAgent {
 		for (Object e : edges) {
 			GamaArgument s = graph.getEdgeSource(e);
 			if (!arguments.contains(s)) {
-				Double v = knownArg.get(s).key;
+				Double v = knownArg.get(s).key();
 				if (v > acc) {
 					acc = v;
 					argSelected = s;
