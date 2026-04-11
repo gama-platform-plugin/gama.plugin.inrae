@@ -57,7 +57,7 @@ species hunter schedules: [] {
 	float Hunger_low_prey_low <- rnd(1.0);
 	float Hunger_low_prey_high <- rnd(1.0);
 
-	init {
+	init { 
 		BN <- bayesian_network("behavior");
 		BN <- BN create_node ("Hunger");
 		BN <- BN add_node_outcome ("Hunger", "High");

@@ -24,17 +24,17 @@ global {
 	matrix img;
 	webcam webcam1 <- webcam(0);
 	
-	action create_agents {
+	action create_agents() {
 		img <- cam_shot(webcam1, image_width::image_height,false );
 		create webcam_analyser {
-			do run_thread interval: 2#s;
+			do run_thread (interval: 2#s);
 		}
 	} 
 	
 	reflex capture_webcam {
 		img <- cam_shot(webcam1,image_width::image_height, false);
 		ask webcam_analyser {
-			do analyse_image;
+			do analyse_image();
 		}
 	}
 }
@@ -42,7 +42,7 @@ global {
 
 species webcam_analyser skills: [thread] {
 	
-	action analyse_image {
+	action analyse_image() {
 		blocks_detected <- [];
 		
 		//building the geometries (black block, white block, block bounds) from the points defined
@@ -84,7 +84,7 @@ species webcam_analyser skills: [thread] {
 		write "blocks: " + blocks collect each.type;	
 	} 
 	//the action run in the thread 
-	action thread_action {
+	action thread_action() {
 		//do analyse_image;
 	}	
 }
@@ -106,13 +106,13 @@ experiment test {
             }
          	image image(img);
 			species cell position: {0,0,0.01};
-			event "p" {ask simulation { do define_distorsions_points;}}
-			event "d" {ask simulation { do define_code;}}
-			event "b" {ask simulation { do define_black_subblock;}}
-			event "w" {ask simulation { do  define_white_subblock;}}
-			event "g" {ask simulation { do define_bounds;}}
-			event #mouse_move {ask simulation { do define_mouse_loc;}}
-			event #mouse_down {ask simulation { do mouse_click;}}
+			event "p" {ask simulation { do define_distorsions_points();}}
+			event "d" {ask simulation { do define_code();}}
+			event "b" {ask simulation { do define_black_subblock();}}
+			event "w" {ask simulation { do  define_white_subblock();}}
+			event "g" {ask simulation { do define_bounds();}}
+			event #mouse_move {ask simulation { do define_mouse_loc();}}
+			event #mouse_down {ask simulation { do mouse_click();}}
 			graphics "mouse_loc" {
 				draw circle(5) at: mouse_location;
 			}

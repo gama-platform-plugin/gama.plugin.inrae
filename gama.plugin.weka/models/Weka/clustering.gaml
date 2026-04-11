@@ -61,13 +61,13 @@ species bug {
 experiment testweka type: gui {
 	parameter "clusterer type" var: clusterer_type among: ["x_means", "k_means", "em", "db_scan","cob_web", "farthest_first"];
 	output {
-		display map_age {
+		display map_age type: 3d {
 			species bug aspect: age;
 		}
-		display map_weight {
+		display map_weight type: 3d {
 			species bug aspect: weight;
 		}
-		display map_size {
+		display map_size type: 3d {
 			species bug aspect: size;
 		}
 		display charts type: 2d {

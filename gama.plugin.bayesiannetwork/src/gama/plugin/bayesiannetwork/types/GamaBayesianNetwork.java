@@ -18,8 +18,6 @@ import gama.api.types.list.IList;
 import gama.api.types.misc.IValue;
 import gama.api.utils.json.IJson;
 import gama.api.utils.json.IJsonValue;
-import gama.core.util.json.Json;
-import gama.core.util.json.JsonValue;
  
 @vars({ @variable(name = "id", type = IType.STRING), 
 	@variable(name = "nodes", type = IType.LIST) })

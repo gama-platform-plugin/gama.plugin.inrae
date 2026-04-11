@@ -80,17 +80,17 @@ global {
 		loop i from: 0 to: data.columns - 1 {
 			loop j from: 0 to: data.rows -1 {
 				point loc <- {pt0.x + (i + 0.5)/(data.columns) * w,  pt0.y + (j + 0.5)/(data.rows) * h};
-				create cell with: (type: string(data[i,j]), shape: rectangle(0.7 *w/(data.columns -1) ,0.7 * h/(data.rows -1)) at_location loc) {
+				create cell(type: string(data[i,j]), shape: rectangle(0.7 *w/(data.columns -1) ,0.7 * h/(data.rows -1)) at_location loc) {
 					int t <- int(float(type)) - 1;
 					color <- colors[t];
 				}
 			}
 		}
-		do create_agents;
+		do create_agents();
 	
 	}
 	
-	action create_agents;
+	action create_agents();
 	
 	//create a new pattern from a 2x2 matrix
 	pattern create_pattern(string id, int v00,int v01,int v10,int v11) {
@@ -101,7 +101,7 @@ global {
 		return p;
 	}
 	
-	action define_distorsions_points {
+	action define_distorsions_points() {
 		define_distorsion_points <- not define_distorsion_points;
 		define_whitesubblock_points <- false;
 		define_blacksubblock_points <- false;
@@ -111,7 +111,7 @@ global {
 		current_mode <- "Definition of distorsion points";
 	}
 	
-	action define_white_subblock {
+	action define_white_subblock(){
 		define_distorsion_points <- false;
 		define_whitesubblock_points <- not define_whitesubblock_points;
 		define_blacksubblock_points <- false;
@@ -120,7 +120,7 @@ global {
 		current_mode <- "Definition of the white block";
 	}
 	
-	action define_black_subblock {
+	action define_black_subblock() {
 		define_distorsion_points <- false;
 		define_whitesubblock_points <- false;
 		define_blacksubblock_points <- not define_blacksubblock_points;
@@ -130,7 +130,7 @@ global {
 	}
 	
 	
-	action define_bounds {
+	action define_bounds() {
 		define_distorsion_points <- false;
 		define_whitesubblock_points <- false;
 		define_blacksubblock_points <- false;
@@ -138,11 +138,11 @@ global {
 		bounds_points <- [];
 		current_mode <- "Definition of the block bound";
 	}
-	action define_mouse_loc {
+	action define_mouse_loc() {
 		mouse_location <- #user_location;
 	}
 	
-	action mouse_click {
+	action mouse_click() {
 			
 		if define_distorsion_points {
 			if (length(distorsion_points) < 4) {
@@ -179,7 +179,7 @@ global {
 		}
 	}
 	
-	action define_code {
+	action define_code() {
 		
 		current_mode <- "Detection of the codes of the blocks";
 		write "Detection of the codes of the blocks";
@@ -265,13 +265,13 @@ experiment analyseImage type: gui {
             }
 			image image_file_test;
 			species cell position: {0,0,0.01};
-			event "p" {ask simulation { do define_distorsions_points;}}
-			event "d" {ask simulation { do define_code;}}
-			event "b" {ask simulation { do define_black_subblock;}}
-			event "w" {ask simulation { do define_white_subblock;}}
-			event "g" {ask simulation { do define_bounds;}}
-			event #mouse_move {ask simulation { do define_mouse_loc;}}
-			event #mouse_down {ask simulation { do mouse_click;}}
+			event "p" {ask simulation { do define_distorsions_points();}}
+			event "d" {ask simulation { do define_code();}}
+			event "b" {ask simulation { do define_black_subblock();}}
+			event "w" {ask simulation { do define_white_subblock();}}
+			event "g" {ask simulation { do define_bounds();}}
+			event #mouse_move {ask simulation { do define_mouse_loc();}}
+			event #mouse_down {ask simulation { do mouse_click();}}
 			graphics "mouse_loc" {
 				draw circle(5) at: mouse_location;
 			}
