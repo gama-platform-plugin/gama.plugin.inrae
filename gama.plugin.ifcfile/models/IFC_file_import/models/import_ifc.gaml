@@ -18,19 +18,19 @@ global {
 			string t <- g get "type";
 			switch t {
 				match "IfcWallStandardCase" {
-					create wall with:[shape::g,name::g get "name", ifc_attributes::g.attributes];	
+					create wall (shape:g,name:g get "name", ifc_attributes:g.attributes);	
 				}
 				match "IfcSlab" {
-					create slab with:[shape::g, name::g get "name", ifc_attributes::g.attributes];
+					create slab (shape::g, name::g get "name", ifc_attributes::g.attributes);
 				}
 				match "IfcSpace" {
-					create space with:[shape::g,name::g get "Reference", ifc_attributes::g.attributes] ;
+					create space (shape::g,name::g get "Reference", ifc_attributes::g.attributes) ;
 				}
 				match "IfcWindow" {
-					create window with:[shape::g, name:: g get "name", ifc_attributes::g.attributes];
+					create window (shape::g, name:: g get "name", ifc_attributes::g.attributes);
 				}
 				match "IfcDoor" {
-					create door with:[shape::g, name:: g get "name", ifc_attributes::g.attributes];
+					create door (shape::g, name:: g get "name", ifc_attributes::g.attributes);
 				}
 			}
 		}
