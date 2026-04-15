@@ -80,11 +80,11 @@ global {
  					}
 			pair<list<argument>,float> decision <- pair<list<argument>, float>(make_decision());
 			opinion <- decision.value;
-			do update_homogeneous_arg;
+			do update_homogeneous_arg();
 			
 		}
 
-		do compute_nb_per_group;
+		do compute_nb_per_group();
 		loop id from: 0 to: nb_agents - 1 {
 			people a <- people(id);	
 		
@@ -102,7 +102,7 @@ global {
 		polarizations << world.polarization();
 	}
 	
-	float polarization{
+	float polarization(){
 		list<float> dists;
 		int N <- length(people) - 1;
 		loop i from: 0 to: N {
@@ -123,7 +123,7 @@ global {
 		return polarization;
 	}
 
-	action compute_nb_per_group {
+	action compute_nb_per_group() {
 		nb_per_group <- [];
 		nb_per_group << people count (each.opinion < -0.75);
 		nb_per_group << people count ((each.opinion >= -0.75) and (each.opinion < -0.5));
@@ -144,7 +144,7 @@ global {
 				pair<list<argument>,float> decision <- pair<list<argument>, float>(make_decision());
 				float prev_op <- copy(opinion);
 				opinion <- decision.value;
-				do update_homogeneous_arg;
+				do update_homogeneous_arg();
 				int id <- int (self);
 				if (h != 0) and (prev_op != opinion) {
 					loop i from: 0 to: nb_agents - 1 {
@@ -160,7 +160,7 @@ global {
 		
 		
 		if (cycle > 0 and every(1000#cycle)) {
-			do compute_nb_per_group;
+			do compute_nb_per_group();
 			polarizations << world.polarization();
 		}
 		convergence <- h> 0 and ((people first_with !(each.homogeneous)) = nil);
@@ -185,14 +185,14 @@ species people skills: [argumenting] frequency: 0 {
 	list<argument> arguments_order;
 	bool homogeneous <- false;
 	
-	action update_homogeneous_arg {
+	action update_homogeneous_arg() {
 		if (length(arguments_order) = 1) {homogeneous <- true;}
 		else {
 			list<string> conclusions <- remove_duplicates(arguments_order collect each.conclusion);
 			homogeneous <- length(conclusions) = 1;
 		}
 	}
-	people choice_of_partner {
+	people choice_of_partner() {
 		if h = 0 {
 			people p;
 			loop while: true {
@@ -215,7 +215,7 @@ species people skills: [argumenting] frequency: 0 {
 	}
 
 	
-	people exchange_with_other_argumentation {
+	people exchange_with_other_argumentation() {
 		people receiver <- choice_of_partner();
 		ask receiver {
 			argument r_arg <- first(arguments_order);
@@ -265,9 +265,12 @@ species people skills: [argumenting] frequency: 0 {
 experiment basic_exp type: gui {
 	output {
 		display chart refresh: every(100 #cycle) type: 2d{
-			/*chart "opinon" series_label_position: none memorize: false size: {1, 0.5} {
-				datalist legend: list(people) collect each.name value: list(people) collect (each.opinion) color: [#black];
-			}*/
+			chart "opinion" series_label_position: none memorize: false size: {1, 0.5} {
+				loop p over: people {
+					data p.name value: p.opinion color: [#black];
+				}
+				
+			}
 
 			chart "opinion histogram" type: histogram size: {1, 0.5} position: {0, 0.5} {
 				data "[-1,-0.75[" value: people count (each.opinion < -0.75);

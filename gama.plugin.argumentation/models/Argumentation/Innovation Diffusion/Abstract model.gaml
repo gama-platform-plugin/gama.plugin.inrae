@@ -72,7 +72,7 @@ global {
 	float polarization_ <- #max_float;
 	
 	init {
-		do create_global_argumentation_graph;
+		do create_global_argumentation_graph();
 		arguments_get_from_usage <- (0.2 * length(global_argumentation_graph.vertices)) among global_argumentation_graph.vertices;
 		//write global_argumentation_graph.vertices collect argument(each).conclusion;
 		create communication_channel number: 1 {
@@ -100,7 +100,7 @@ global {
 			argument_lifespan <- 200.0; 
 			global_argumentation_graph <- world.global_argumentation_graph;
 		}
-		do generate_network;
+		do generate_network();
 		float sum_influence_factor <- possible_adopter sum_of each.influence_factor; 
 		ask possible_adopter {
 			probability_exchange <- sum_influence_factor = 0 ? 0 : (100 * (influence_factor /sum_influence_factor));
@@ -126,7 +126,7 @@ global {
 		
 	}
 	
-	action generate_network {
+	action generate_network() {
 		switch social_network_type {
 			match "no" {
 				
@@ -161,7 +161,7 @@ global {
 					 possible_adopter[i].social_network <- ags collect possible_adopter[int(each)];
 				} 	
 				ask node_agent + edge_agent{
-					do die;
+					do die();
 				}
 			}
 			match "small-world" {
@@ -171,7 +171,7 @@ global {
 					 possible_adopter[i].social_network <- ags collect possible_adopter[int(each)];
 				} 		
 				ask node_agent + edge_agent{
-					do die;
+					do die();
 				}
 			}
 		}
@@ -181,7 +181,7 @@ global {
 		
 	}
 	
-	float polarization{
+	float polarization(){
 		if (polarization_ != #max_float) {
 			return polarization_;
 		}
@@ -247,7 +247,7 @@ species possible_adopter parent: abstract_adopter {
 
 
 experiment explore_evolution type: batch until: cycle >= 2000 repeat: 100 keep_seed: true {
-	
+	 
 	init {
 		save_result <- false;
 		

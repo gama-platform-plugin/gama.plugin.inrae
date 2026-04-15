@@ -45,7 +45,7 @@ global {
 		csv_file ag_file <- csv_file("../includes/data.csv", ";", true);
 		
 		
- 		create people from: ag_file with:[option:: get("Opinion Option")];
+ 		create people (option: get("Opinion Option")) from: ag_file ;
  		nb_agents <- length(people);
 		
  		ask people {
@@ -143,11 +143,11 @@ global {
  		ask people {
  			pair<list<argument>,float> decision <- pair<list<argument>, float>(make_decision());
 			opinion <- decision.value;
-			do update_homogeneous_arg;
+			do update_homogeneous_arg();
  		}
 		
  		opinion_init <- people mean_of each.opinion;
- 		do compute_nb_per_group;
+ 		do compute_nb_per_group();
  		
 		
 		convergence <- false;
@@ -162,7 +162,7 @@ global {
  		
  	}
  	
- 	float polarization{
+ 	float polarization(){
 		list<float> dists;
 		int N <- length(people) - 1;
 		
@@ -183,7 +183,7 @@ global {
 		return polarization;
 	}
  	
- 	action compute_nb_per_group {
+ 	action compute_nb_per_group() {
  		nb_per_group <- [];
  		nb_per_group<< people count (each.opinion < -0.75); 
 		nb_per_group<< people count ((each.opinion >= -0.75) and (each.opinion < -0.5));
@@ -211,13 +211,13 @@ global {
 			if receiver != nil and receiver.update_decision {
 				pair<list<argument>,float> decision <- pair<list<argument>, float>(make_decision());
 				opinion <- decision.value;
-				do update_homogeneous_arg;
+				do update_homogeneous_arg();
 			}
 		}
 
 		
 		if (cycle > 0 and every(2500#cycle)) {
-			do compute_nb_per_group;
+			do compute_nb_per_group();
 			if (every(5000#cycle)) {
 				polarizations << world.polarization();
 			}
@@ -251,14 +251,14 @@ species people skills: [argumenting] frequency: 0{
 	list<argument> arguments_order;
 	bool homogeneous <- false;
 	
-	action update_homogeneous_arg {
+	action update_homogeneous_arg() {
 		if (length(arguments_order) = 1) {homogeneous <- true;}
 		else {
 			list<string> conclusions <- remove_duplicates(arguments_order collect each.conclusion);
 			homogeneous <- length(conclusions) = 1;
 		}
 	}
-	people choice_of_partner {
+	people choice_of_partner() {
 		if h = 0 {
 			people p;
 			loop while: true {
@@ -281,7 +281,7 @@ species people skills: [argumenting] frequency: 0{
 
 	
 	
-	people exchange_with_other_argumentation {
+	people exchange_with_other_argumentation() {
 		people receiver <- choice_of_partner();
 		ask receiver {
 			argument r_arg <- first(arguments_order);
@@ -332,10 +332,8 @@ species people skills: [argumenting] frequency: 0{
 experiment argumentation_model type: gui {
 	output {
 		display chart refresh: every(100 #cycle) type: 2d{
-			/*chart "opinon"  series_label_position:none memorize: false style: dot size: {1,0.5}{
-				datalist legend:list(people) collect each.name value: list(people) collect each.opinion color:#black;
-			}*/
-			chart "opinon" size: {1,0.5} y_range: {-1,1}{
+			
+			chart "opinion" size: {1,0.5} y_range: {-1,1}{
 				data "Mean" value: people mean_of each.opinion;
 			}
 			chart "opinion histogram" type: histogram size: {1,0.5} position: {0, 0.5} y_range: {0,500}{
@@ -523,7 +521,7 @@ experiment batch_model_no_evo type: batch until: cycle > 0 repeat: 30 keep_seed:
 
 			} 
 
-			save val to: "Vegan_init/result_polarization"+ ".csv" rewrite: false;
+			save val format: "text" to: "Vegan_init/result_polarization"+ ".csv" rewrite: false;
 			
 			val <- "";
 			first <- true;
@@ -537,7 +535,7 @@ experiment batch_model_no_evo type: batch until: cycle > 0 repeat: 30 keep_seed:
 
 			} 
 
-			save val to: "Vegan_init/result_opinion"+ ".csv" rewrite: false;
+			save val format: "text" to: "Vegan_init/result_opinion"+ ".csv" rewrite: false;
 			
 			val <- "";
 			first <- true;
@@ -551,7 +549,7 @@ experiment batch_model_no_evo type: batch until: cycle > 0 repeat: 30 keep_seed:
 
 			} 
 
-			save val to: "Vegan_init/result_nb"+ ".csv" rewrite: false;
+			save val format: "text" to: "Vegan_init/result_nb"+ ".csv" rewrite: false;
 		}
 		
 		
@@ -596,7 +594,7 @@ experiment batch_model_no_arg type: batch until: cycle = 500000 repeat: 30 keep_
 
 			} 
 
-			save val to: "Vegan_simple/result_polarization"+ ".csv" rewrite: false;
+			save val format: "text" to: "Vegan_simple/result_polarization"+ ".csv" rewrite: false;
 			
 			val <- "";
 			first <- true;
@@ -610,7 +608,7 @@ experiment batch_model_no_arg type: batch until: cycle = 500000 repeat: 30 keep_
 
 			} 
 
-			save val to: "Vegan_simple/result_opinion"+ ".csv" rewrite: false;
+			save val format: "text" to: "Vegan_simple/result_opinion"+ ".csv" rewrite: false;
 			
 			val <- "";
 			first <- true;
@@ -624,7 +622,7 @@ experiment batch_model_no_arg type: batch until: cycle = 500000 repeat: 30 keep_
 
 			} 
 
-			save val to: "Vegan_simple/result_nb"+ ".csv" rewrite: false;
+			save val format: "text" to: "Vegan_simple/result_nb"+ ".csv" rewrite: false;
 		}
 		
 		

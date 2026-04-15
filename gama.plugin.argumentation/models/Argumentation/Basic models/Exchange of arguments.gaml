@@ -12,26 +12,26 @@ import "Argumentation graph generation.gaml"
 global {
 		
 	init {
-		do create_global_argumentation_graph;
+		do create_global_argumentation_graph();
 		
-		create argumentative_agent number: 100 with: (crit_importance:possible_criteria as_map (each::rnd(1.0)),
+		create argumentative_agent (crit_importance:possible_criteria as_map (each::rnd(1.0)),
 											source_type_confidence:source_types as_map (each:: rnd(1.0))
-		) {
+		) number: 100 {
 			argumentation_graph <- directed(graph([]));
 			loop times: rnd(1,5){
 				argument a <- one_of(global_argumentation_graph.vertices);
 				bool is_ok <- add_argument(argument:a, graph: global_argumentation_graph);
 			
 			} 
-			do build_opinion;
+			do build_opinion();
 		} 		 
 	}
 }
 
 species argumentative_agent skills:[argumenting] {
 	float opinion;
-	action build_opinion {
-		pair decision <- make_decision();
+	action build_opinion() {
+		pair decision <- pair(make_decision());
 		opinion <- float(decision.value) with_precision 2;
 	}
 	
@@ -40,7 +40,7 @@ species argumentative_agent skills:[argumenting] {
 			
 		ask one_of(argumentative_agent - self) {
 			bool is_ok <- add_argument(argument:a, graph: global_argumentation_graph);
-			do build_opinion;
+			do build_opinion();
 		}
 	}
 	

@@ -13,20 +13,20 @@ global {
 	list<argument> arguments_used;
 	float opinion;
 	init {
-		do create_global_argumentation_graph;
-		create argumentative_agent with: (argumentation_graph: global_argumentation_graph,
+		do create_global_argumentation_graph();
+		create argumentative_agent (argumentation_graph: global_argumentation_graph,
 											crit_importance:possible_criteria as_map (each::rnd(1.0)),
 											source_type_confidence:source_types as_map (each:: rnd(1.0))
 		) {
-			do build_opinion;
+			do build_opinion();
 		}  
 	}
 }
 
 species argumentative_agent skills:[argumenting] {
 	
-	action build_opinion {
-		pair decision <- make_decision();
+	action build_opinion() {
+		pair decision <- pair(make_decision());
 		opinion <- float(decision.value) with_precision 2;
 		arguments_used <- decision.key;
 		write name + " " sample(opinion) + " " + sample(arguments_used);

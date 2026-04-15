@@ -21,7 +21,7 @@ global {
 	bool use_exact_number <- false;
 	int agrument_pro_number <- 0;
 	
-	action create_global_argumentation_graph {
+	action create_global_argumentation_graph() {
 		
 		loop i from: 1 to: num_arguments  {
 			argument a;
