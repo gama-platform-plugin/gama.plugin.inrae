@@ -8,7 +8,8 @@ if [ "$IS_DEPLOY" == "true" ]; then
     BRANCH="${REF_NAME:-$(git rev-parse --abbrev-ref HEAD)}"
 else
     # Get the name of the default branch
-    BRANCH="$REF_NAME"
+    BRANCH="${REF_NAME:-$(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's/origin\///')}"
+    SKIP_PLUGINS="-Djarsigner.skip=true -Dwagon.skip=true"
 fi
 
 if [[ "$BRANCH" =~ GAMA_([0-9]{4}-[0-9]{2}) ]]; then
@@ -27,4 +28,5 @@ mvn clean install -B -e -T 4 \
     -Dtycho.p2.transport.min-cache-minutes=0 \
     -Dtycho.equinox.resolver.uses=true \
     -P p2Repo \
-    --settings ../settings.xml
+    --settings ../settings.xml \
+    $SKIP_PLUGINS
