@@ -10,7 +10,7 @@ Require-Bundle: gama.core;bundle-version="0.0.0",
  gama.dependencies;bundle-version="0.0.0",
  gama.processor,
  gama.api,
- gama.annotations;bundle-version="[0.0.0,1.0.0)"
+ gama.annotations;bundle-version="0.0.0"
 Bundle-ClassPath: lib/jayes-0.0.2.jar,
  .
 Export-Package: gama.plugin.bayesiannetwork.operators,
